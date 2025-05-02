@@ -1,0 +1,23 @@
+import mongoose from "mongoose";
+
+const itemSchema = mongoose.Schema({
+    item: {
+        type: String,
+        required: [true, "Item name cannot be empty"]
+    },
+    purpose: String,
+    count: {
+        type: Number,
+        default: 1,
+    },
+    priority:  {
+        type: String,
+        default: "normal",
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    },
+})
+
+export const Item = mongoose.model("item", itemSchema)

@@ -1,14 +1,21 @@
 import React from 'react'
 import Navigation from './UI/Navigation'
-import WelcomeUI from './UI/WelcomeUI'
+import WelcomeUI from './PAGES/WelcomeUI'
+import Application from './PAGES/Application'
 import Footer from './UI/Footer'
+import {BrowserRouter, Route, Routes} from "react-router-dom"
+import Overlay from './UI/Overlay'
 
 export default function App() {
   return (
-    <div>
+    <BrowserRouter>
       <Navigation />
-      <WelcomeUI />
+      {/* <Overlay /> */}
+      <Routes>
+        <Route element={<WelcomeUI />} path='/' />
+        <Route element={<Application />} path='/app' />
+      </Routes>
       <Footer />
-    </div>
+     </BrowserRouter>
   )
 }
