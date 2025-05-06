@@ -7,10 +7,10 @@ export default function AddItemForm() {
   <input type="number" max={50} min={1} className="w-full bg-amber-100 rounded-sm h-8 px-2" name="count" placeholder="Count"/>
   {/* <input type="text" className="w-full bg-amber-100 rounded-sm h-8 px-2" name="priority" placeholder="Priority"/> */}
   <select name="priority" id="priority" className="w-full bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
-    <option className="font-bold">priority:</option>
+    <option className="font-bold" selected>priority: Normal</option>
     <option value="high">High</option>
     <option value="mid-high">Mid High</option>
-    <option value="normal" selected>Normal</option>
+    <option value="normal" >Normal</option>
     <option value="mid-low">Mid Low</option>
     <option value="low">Low</option>
   </select>

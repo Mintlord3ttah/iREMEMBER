@@ -1,6 +1,8 @@
 import AddItemForm from "../UI/AddItemForm";
+import EditItemForm from "../UI/EdititemForm";
 import GreenBtn from "../UI/GreenBtn";
 import Item from "../UI/Item";
+import Overlay from "../UI/Overlay";
 import StatsNumber from "../UI/StatsNumber";
 
 export default function Application() {
@@ -13,14 +15,24 @@ export default function Application() {
           <option className="font-bold">Select</option>
           <option value="pack-all" selected>Pack all</option>
           <option value="pack-all">Unpack all</option>
+          <option value="favourite-all" >Favourite all</option>
           <option value="delete-all" >Delete all</option>
+          <option value="delete-all" >Delete all selected</option>
+          <option value="delete-all" >Delete all not priority (p)</option>
+          <option value="delete-all" >Delete all not favourite (f)</option>
+          <option value="delete-all" >Delete all not (p) and (f)</option>
         </select>
         <select name="priority" id="priority" className="w-fit bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
           <option className="font-bold" selected>Sort by</option>
           <option value="pack-all" >Time</option>
           <option value="pack-all">packed</option>
           <option value="delete-all" >unpacked</option>
+          <option value="delete-all" >priority</option>
         </select>
+        <label htmlFor="select" className="flex gap-2 ">
+        <input type="checkbox" name="select" id="select" />
+        <span>select</span>
+        </label>
         </div>
         <div className="flex gap-16">
         <ul className="flex flex-col gap-3">
@@ -60,8 +72,8 @@ export default function Application() {
           <Item>Item 10</Item>
         </ul>
         </div>
-        <div className="h-20 rounded-2xl w-full bg-amber-500 flex justify-center items-center mt-4">
-          <span className="font-bold">Stats:</span> You have packed <StatsNumber color={"text-green-500"}>13</StatsNumber> items,
+        <div className="h-20 rounded-2xl w-full bg-amber-500 flex items-center mt-4 px-4">
+          <span className="font-bold">Stats: </span> You have packed <StatsNumber color={"text-green-500"}>13</StatsNumber> items,
            and <StatsNumber color={"text-amber-400"}>5</StatsNumber> items unpacked, total of <StatsNumber color={"text-blue-500"}>18</StatsNumber>
         </div>
       </div>
@@ -77,6 +89,9 @@ export default function Application() {
         <p>Item 4</p>
       </div>
       </div>
+      <Overlay>
+        <EditItemForm />
+      </Overlay>
     </section>
   )
 }
