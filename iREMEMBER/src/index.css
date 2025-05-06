@@ -54,3 +54,8 @@
     visibility: visible;
     opacity: 1;
   }
+
+  .anim{
+    height: fit-content;
+    transition: all 1s ease;
+  }

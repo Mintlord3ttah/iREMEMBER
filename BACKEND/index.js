@@ -12,11 +12,24 @@ app.get("/", (req, res)=>{
     res.send("hello from the server")
 })
 
+// USERS ROUTE HANDLERS
+
 app.route("/api/v1/users")
 .get(getUsers)
 .post(createUser)
 
 app.route("/api/v1/users/:id")
+.get(getUser)
+.patch(updateUser)
+.delete(deleteUser)
+
+
+// ITEM ROUTE HANDLERS
+app.route("/api/v1/items")
+.get(getUsers)
+.post(createUser)
+
+app.route("/api/v1/items/:id")
 .get(getUser)
 .patch(updateUser)
 .delete(deleteUser)

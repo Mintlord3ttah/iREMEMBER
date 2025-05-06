@@ -18,6 +18,18 @@ const itemSchema = mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    createdById: {
+        type: String,
+        required: [true, "Please provide the createdById"]
+    },
+    packed: {
+        default: false,
+        type: Boolean
+    }
+    // createdByEmail: {
+    //     type: String,
+    //     // required: [true, "please provide the createdByEmail"]
+    // }
 })
 
 export const Item = mongoose.model("item", itemSchema)

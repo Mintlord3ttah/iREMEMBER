@@ -1,5 +1,6 @@
 
 import { User } from "../MODELS/User.js"
+import { API } from "../utils/apiHandlers.js"
 
 export async function getUsers(req, res, next){    
     try{
@@ -16,9 +17,10 @@ export async function getUsers(req, res, next){
     next()
 }
 export async function createUser(req, res, next){
-    console.log(req.body)
     try{
-        const user = await User.create(req.body)
+        const api = new API(User, req)
+        api.create()
+        // const user = await User.create(req.body)
         res.status(201).json({
             status: "success",
             data: {user}
