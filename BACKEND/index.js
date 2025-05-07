@@ -1,7 +1,10 @@
 import express from 'express'
-import { createUser, deleteUser, getUser, getUsers, updateUser } from './CONTROLLERS/userController.js'
+import cors from "cors"
+import item_router from './ROUTES/itemsRouter.js'
+import user_router from './ROUTES/usersRouter.js'
 
 export const app = express()
+app.use(cors())
 app.use(express.json()) // to parse json data from the request body
 app.use(express.urlencoded({extended: true})) // to parse urlencoded data from the request body
 
@@ -13,23 +16,5 @@ app.get("/", (req, res)=>{
 })
 
 // USERS ROUTE HANDLERS
-
-app.route("/api/v1/users")
-.get(getUsers)
-.post(createUser)
-
-app.route("/api/v1/users/:id")
-.get(getUser)
-.patch(updateUser)
-.delete(deleteUser)
-
-
-// ITEM ROUTE HANDLERS
-app.route("/api/v1/items")
-.get(getUsers)
-.post(createUser)
-
-app.route("/api/v1/items/:id")
-.get(getUser)
-.patch(updateUser)
-.delete(deleteUser)
+app.use("/api/v1/users", user_router)
+app.use("/api/v1/items", item_router)

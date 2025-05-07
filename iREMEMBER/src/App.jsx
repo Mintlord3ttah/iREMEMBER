@@ -5,9 +5,11 @@ import Application from './PAGES/Application'
 import Footer from './UI/Footer'
 import {BrowserRouter, Route, Routes} from "react-router-dom"
 import Overlay from './UI/Overlay'
+import DataContextProvider from './context/DataContext'
 
 export default function App() {
   return (
+    <DataContextProvider>
     <BrowserRouter>
       <Navigation />
       {/* <Overlay /> */}
@@ -17,5 +19,6 @@ export default function App() {
       </Routes>
       <Footer />
      </BrowserRouter>
+    </DataContextProvider>
   )
 }

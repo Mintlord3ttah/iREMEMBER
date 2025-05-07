@@ -20,6 +20,8 @@ export async function createUser(req, res, next){
     try{
         const api = new API(User, req)
         api.create()
+        const user = await api.query
+        // console.log()
         // const user = await User.create(req.body)
         res.status(201).json({
             status: "success",

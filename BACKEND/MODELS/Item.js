@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const itemSchema = mongoose.Schema({
     item: {
         type: String,
+        unique: [true, "Item already exist"],
         required: [true, "Item name cannot be empty"]
     },
     purpose: String,
@@ -23,13 +24,9 @@ const itemSchema = mongoose.Schema({
         required: [true, "Please provide the createdById"]
     },
     packed: {
-        default: false,
-        type: Boolean
+        type: Boolean,
+        default: false
     }
-    // createdByEmail: {
-    //     type: String,
-    //     // required: [true, "please provide the createdByEmail"]
-    // }
 })
 
-export const Item = mongoose.model("item", itemSchema)
+export const Item = mongoose.model("items", itemSchema)

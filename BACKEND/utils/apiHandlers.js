@@ -1,14 +1,14 @@
 class API{
-    constructor(model, req){
-        this.model = model,
+    constructor(query, req){
+        this.query = query,
         this.req = req
         // this.res = res
     }
 
     create(){
-        this.model.create(this.req.body)
+        this.query = this.query.create(this.req.body)
         // try{
-        //         const user = await this.model.create(this.req.body)
+        //         const user = await this.query.create(this.req.body)
         //         this.res.status(201).json({
         //             status: "success",
         //             data: {user}
