@@ -26,6 +26,14 @@ const itemSchema = mongoose.Schema({
     packed: {
         type: Boolean,
         default: false
+    },
+    favourite: {
+        type: Boolean,
+        default: false
+    },
+    __v: {
+        type: Number,
+        select: false
     }
 })
 

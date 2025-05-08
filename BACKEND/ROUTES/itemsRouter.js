@@ -11,6 +11,6 @@ item_router.route("/")
 
 item_router.route("/:id")
 .get(getItem)
-.put(updateItem)
+.patch(updateItem)
 .delete(deleteItem)
 export default item_router

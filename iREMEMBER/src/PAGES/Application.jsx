@@ -6,9 +6,10 @@ import Item from "../UI/Item";
 import Overlay from "../UI/Overlay";
 import StatsNumber from "../UI/StatsNumber";
 import { useDataContext } from "../context/DataContext";
+import ItemsBoard from "../UI/ItemsBoard";
 
 export default function Application() {
-  const {select} = useDataContext()
+  const {select, isEdit} = useDataContext()
   const [form, setForm] = useState(false)
 
   function handleSelect(e){
@@ -42,44 +43,7 @@ export default function Application() {
         <span>select</span>
         </label>
         </div>
-        <div className="flex gap-8">
-        <ul className="flex flex-col gap-1">
-          <Item>Item 1 long</Item>
-          <Item>Item 2</Item>
-          <Item>Item 3</Item>
-          <Item>Item 4</Item>
-          <Item>Item 5</Item>
-          <Item>Item 6</Item>
-          <Item>Item 7</Item>
-          <Item>Item 8</Item>
-          <Item>Item 9</Item>
-          <Item>Item 10</Item>
-        </ul>
-        <ul className="flex flex-col gap-1">
-          <Item>Item 1</Item>
-          <Item>Item 2</Item>
-          <Item>Item 3</Item>
-          <Item>Item 4</Item>
-          <Item>Item 5</Item>
-          <Item>Item 6</Item>
-          <Item>Item 7</Item>
-          <Item>Item 8</Item>
-          <Item>Item 9</Item>
-          <Item>Item 10</Item>
-        </ul>
-        <ul className="flex flex-col gap-1">
-          <Item>Item 1</Item>
-          <Item>Item 2</Item>
-          <Item>Item 3</Item>
-          <Item>Item 4</Item>
-          <Item>Item 5</Item>
-          <Item>Item 6</Item>
-          <Item>Item 7</Item>
-          <Item>Item 8</Item>
-          <Item>Item 9</Item>
-          <Item>Item 10</Item>
-        </ul>
-        </div>
+        <ItemsBoard />
         <div className="flex justify-end flex-col grow-1">
         <div className="h-20 rounded-2xl w-full bg-amber-500 flex items-center mt-4 px-4">
           <span className="font-bold">Stats: </span> You have packed <StatsNumber color={"text-green-500"}>13</StatsNumber> items,
@@ -99,9 +63,9 @@ export default function Application() {
         <p>Item 4</p>
       </div>
       </div>
-      {/* <Overlay>
+      {isEdit && <Overlay>
         <EditItemForm />
-      </Overlay> */}
+      </Overlay>}
     </section>
   )
 }
