@@ -7,6 +7,8 @@ import Overlay from "../UI/Overlay";
 import StatsNumber from "../UI/StatsNumber";
 import { useDataContext } from "../context/DataContext";
 import ItemsBoard from "../UI/ItemsBoard";
+import Stats from "../UI/Stats";
+import FavouriteItems from "../UI/FavouriteItems";
 
 export default function Application() {
   const {select, isEdit} = useDataContext()
@@ -44,24 +46,13 @@ export default function Application() {
         </label>
         </div>
         <ItemsBoard />
-        <div className="flex justify-end flex-col grow-1">
-        <div className="h-20 rounded-2xl w-full bg-amber-500 flex items-center mt-4 px-4">
-          <span className="font-bold">Stats: </span> You have packed <StatsNumber color={"text-green-500"}>13</StatsNumber> items,
-           and <StatsNumber color={"text-amber-400"}>5</StatsNumber> items unpacked, total of <StatsNumber color={"text-blue-500"}>18</StatsNumber>
-        </div>
-        </div>
+        <Stats />
       </div>
 
       <div className="anim flex flex-col border-l gap-4 p-4 pb-0">
-      {form ? <AddItemForm /> :
+      {form ? <AddItemForm setForm={setForm} /> :
       <GreenBtn onClick={()=>setForm(true)}>+ Add Item</GreenBtn>}
-      <div className="bg-amber-300 h-fit rounded-2xl border p-4 flex flex-col gap-3" >
-        <h3 className="font-bold">Favourite Items</h3>
-        <p>Item 1</p>
-        <p>Item 2</p>
-        <p>Item 3</p>
-        <p>Item 4</p>
-      </div>
+      <FavouriteItems />
       </div>
       {isEdit && <Overlay>
         <EditItemForm />

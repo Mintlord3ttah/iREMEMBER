@@ -1,21 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Favourite from "./Favourite";
 import Priority from "./Priority";
-import { useState } from "react";
+import {toast} from "react-hot-toast";
 import { useDataContext } from "../context/DataContext";
 
-export default function AddItemForm() {
+export default function AddItemForm({setForm}) {
   const {resetIsFavourite, isFavourite} = useDataContext()
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const {mutate, } = useMutation({
     mutationFn: postData,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["items"])
+      toast.success("SUCCESS!!!")
       console.log("Server response:", data);
     },
     onError: (error) => {
-      console.error("Error:", error);
+      // console.error("Error:", error);
+      toast.error("Item already exist")
     }
   })
 
@@ -45,8 +47,9 @@ export default function AddItemForm() {
     const priority = formData.get("priority").includes("priority:") ? "normal" : formData.get("priority") 
     const obj = JSON.stringify({item, purpose, count, packed, priority, createdById: 1, favourite: isFavourite})
 
-    mutation.mutate(obj)
+    mutate(obj)
     resetIsFavourite()
+    setForm(false)
     e.target.reset = true
   }
 
