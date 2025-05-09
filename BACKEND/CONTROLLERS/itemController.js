@@ -32,6 +32,7 @@ export async function getAllItems(req, res, next) {
             const items = await Item.find(req.query)
             res.status(200).json({
             status: "success",
+            count: items.length,
             data: {items}
         })}catch(err){
             res.status(404).json({
@@ -90,3 +91,68 @@ export async function deleteItem(req, res, next){
         
     next()
 }
+
+export async function updateItems(req, res, next){
+        const param = req.params.mutate
+        try{
+            if (!/^[-]?(packed|favourite)$/.test(param)) throw new Error("Invalid request")
+            const findSelected = await Item.find({selected: true}) // check if there are seleted items
+            const query = findSelected.length ? Item.find({selected: true}) : Item.find()
+            const values = param.includes("-") 
+            const updatedItems = param.includes("packed") ? await query.updateMany({ packed:  !values}) :
+                                 await query.find().updateMany({ favourite: !values });
+                                 await Item.find({selected: true}).updateMany({selected: false})
+            res.status(200).json({
+                status: "success",
+                data: {updatedItems}
+            })
+        }catch(err){
+            res.status(400).json({
+                status: "fail",
+                message: err.message
+            })
+        }
+    
+        next()
+
+    }
+
+
+export async function deleteItems(req, res, next) {
+    const param = req.params.mutate
+    try{
+        if (!/^(expriority,exfavourite|expriority|exfavourite)$/.test(param)) throw new Error("Invalid request")
+            param.includes("expriority") ? await Item.deleteMany({ priority: { $nin: ["mid-high", "high"] } }) :
+            param.includes("exfavourite") ? await Item.deleteMany({ favourite: { $ne: true } }) :
+            await Item.deleteMany({favourite: { $ne: true }, priority: { $nin: ["mid-high", "high"]}})
+        res.status(204).json({
+            status: "success",
+            data: null
+        })
+    }catch(err){
+        res.status(404).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+        
+    next()
+}
+
+export async function deleteAllItems(req, res, next) {
+    try{
+        // if(req.params !== "wipe") throw new Error("Invalid operation")
+        await Item.deleteMany({})
+        res.status(204).json({
+            status: "success",
+            data: null
+        })
+    }catch(err){
+        res.status(404).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+        
+    next()
+} 

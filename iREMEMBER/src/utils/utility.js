@@ -5,3 +5,16 @@ export function truncateStr(str, length) {
         return str;
     }
 }
+
+export function handleFieldState(setIsState, state, field, mutate){
+    try{
+      setIsState(state => !state)
+      const changePacked = state ? false : true
+      const obj = field === "packed" ?
+                  JSON.stringify({packed: changePacked}):
+                  JSON.stringify({selected: changePacked})
+      mutate(obj)
+    }catch(error){
+      console.log(error.type)
+  }
+}

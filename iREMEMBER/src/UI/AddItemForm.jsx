@@ -1,41 +1,12 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Favourite from "./Favourite";
 import Priority from "./Priority";
-import {toast} from "react-hot-toast";
 import { useDataContext } from "../context/DataContext";
+import useMutateData from "../service/useMutateData";
 
 export default function AddItemForm({setForm}) {
   const {resetIsFavourite, isFavourite} = useDataContext()
-  const queryClient = useQueryClient();
-
-  const {mutate, } = useMutation({
-    mutationFn: postData,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["items"])
-      toast.success("SUCCESS!!!")
-      console.log("Server response:", data);
-    },
-    onError: (error) => {
-      // console.error("Error:", error);
-      toast.error("Item already exist")
-    }
-  })
-
-  async function postData(newData){
-    const response = await fetch("http://localhost:3000/api/v1/items/", {
-      method: "POST",
-      body: newData,
-      headers: {
-        'Content-Type': 'application/json'
-      }    
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+  const {mutate, status} = useMutateData({method: "POST"})  
   
-    return response.json();
-  }
   async function handleSubmit(e){
     e.preventDefault()
 

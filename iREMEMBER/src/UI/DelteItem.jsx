@@ -2,32 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 import Loader from './Loader';
+import useMutateData from '../service/useMutateData';
 
 export default function DelteItem({id}) {
-    const queryClient = useQueryClient();
-
-  const {mutate, status} = useMutation({
-    mutationFn: postData,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["items"])
-    },
-    onError: (error) => {
-      console.error("Error:", error);
-      toast.error("Item already exist")
-    }
-  })
-
-  async function postData(){
-    const response = await fetch(`http://localhost:3000/api/v1/items/${id}`, {
-      method: "DELETE",
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-  
-    return response.json();
-  }
+  const {mutate, status} = useMutateData({id, method: "DELETE"})
 
   function handleDelete(){
     mutate()

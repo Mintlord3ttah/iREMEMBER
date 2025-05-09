@@ -1,5 +1,5 @@
 import express from "express"
-import { createItem, deleteItem, getAllItems, getItem, updateItem } from "../CONTROLLERS/itemController.js"
+import { createItem, deleteAllItems, deleteItem, deleteItems, getAllItems, getItem, updateItem, updateItems } from "../CONTROLLERS/itemController.js"
 
 
 // ITEM ROUTE HANDLERS
@@ -13,4 +13,12 @@ item_router.route("/:id")
 .get(getItem)
 .patch(updateItem)
 .delete(deleteItem)
+
+item_router.route("/uniform/:mutate")
+.patch(updateItems)
+.delete(deleteItems)
+
+item_router.route("/db/wipe")
+.delete(deleteAllItems)
+
 export default item_router

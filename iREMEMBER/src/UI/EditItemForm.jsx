@@ -60,7 +60,7 @@ export default function EditItemForm() {
     <Input defaultValue={itemToEdit.purpose} label={"Purpose"} />
     <Input defaultValue={itemToEdit.count} label={"Count"} />
     <div className='flex gap-8 items-center px-4'>
-    <Priority width={"w-fit"} />
+    <Priority defaultValue={itemToEdit.priority} width={"w-fit"} />
     <label className="flex gap-2 items-center ">
         <Favourite />
         <span>favourite</span>

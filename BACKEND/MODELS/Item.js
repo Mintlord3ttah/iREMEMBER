@@ -31,6 +31,10 @@ const itemSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    selected: {
+        type: Boolean,
+        default: false
+    },
     __v: {
         type: Number,
         select: false

@@ -9,9 +9,10 @@ import { useDataContext } from "../context/DataContext";
 import ItemsBoard from "../UI/ItemsBoard";
 import Stats from "../UI/Stats";
 import FavouriteItems from "../UI/FavouriteItems";
+import GeneralMutation from "../UI/GeneralMutation";
 
 export default function Application() {
-  const {select, isEdit} = useDataContext()
+  const {select, isEdit, isSelect} = useDataContext()
   const [form, setForm] = useState(false)
 
   function handleSelect(e){
@@ -22,17 +23,7 @@ export default function Application() {
       <div className="flex flex-col gap-4 w-full">
         <div className="flex gap-6 items-center mb-4">
       <h3 className="text-2xl font-bold">ITEMS</h3>
-        <select name="mutation" className="w-fit bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
-          <option className="font-bold">Select</option>
-          <option value="pack-all" selected>Pack all</option>
-          <option value="pack-all">Unpack all</option>
-          <option value="favourite-all" >Favourite all</option>
-          <option value="delete-all" >Delete all</option>
-          {/* <option value="delete-all" >Delete all selected</option> */}
-          <option value="delete-all">Delete all not priority (p)</option>
-          <option value="delete-all">Delete all not favourite (f)</option>
-          <option value="delete-all">Delete all not (p) and (f)</option>
-        </select>
+        <GeneralMutation />
         <select name="priority" id="priority" className="w-fit bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
           <option className="font-bold" selected>Sort by</option>
           <option value="pack-all" >Time</option>
@@ -41,7 +32,7 @@ export default function Application() {
           <option value="delete-all" >priority</option>
         </select>
         <label htmlFor="select" className="flex gap-2 ">
-        <input type="checkbox" onClick={handleSelect} name="select" id="select" />
+        <input type="checkbox" onClick={handleSelect} checked={isSelect} name="select" id="select" />
         <span>select</span>
         </label>
         </div>

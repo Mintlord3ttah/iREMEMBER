@@ -1,0 +1,43 @@
+import { memo, useEffect, useState } from "react"
+import useMutateData from "../service/useMutateData"
+import { useDataContext } from "../context/DataContext"
+
+const endpoints = {
+    "pack-all": "packed",
+    "unpack-all": "-packed",
+    "favourite-all": "favourite",
+    "unfavourite-all": "-favourite",
+    "delete-all": "wipe",
+    "wipe-not-priority": "expriority",
+    "wipe-not-favourite": "exfavourite",
+    "wipe-not-priority|favourite": "expriority,exfavourite"
+}
+const path = "http://localhost:3000/api/v1/items"
+
+const GeneralMutation = memo(function GeneralMutation() {
+    const {isSelect, select} = useDataContext()
+    const [endpoint, setEndpoint] = useState("")
+    const {mutate} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `${path}/db/${endpoints[endpoint]}`}) :
+                     useMutateData({method: endpoint.includes("wipe") ? "DELETE" : "PATCH", url: `${path}/uniform/${endpoints[endpoint]}`})
+
+    function handleClick(e){
+        setEndpoint(e.target.value)
+        if(isSelect)select()
+    }
+
+    useEffect(()=>{endpoint.length && mutate(JSON.stringify({select: "null"}))},[endpoint]) // fake data to occupy the vaccum
+
+    return <select onChange={handleClick} defaultValue={"pack-all"} name="mutation" className="w-fit bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
+        <option className="font-bold">Select</option>
+        <option value="pack-all">Pack all</option>
+        <option value="unpack-all">Unpack all</option>
+        <option value="favourite-all" >Favourite all</option>
+        <option value="unfavourite-all" >Unfavourite all </option>
+        <option value="delete-all" >Delete all</option>
+        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`}  value="wipe-not-priority">Delete all not priority (p)</option>
+        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`} value="wipe-not-favourite">Delete all not favourite (f)</option>
+        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`} value="wipe-not-priority|favourite">Delete all not (p) and (f)</option>
+    </select>
+})
+
+export default GeneralMutation

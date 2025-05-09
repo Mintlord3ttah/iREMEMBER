@@ -1,12 +1,17 @@
+import { useState } from "react";
 import { useDataContext } from "../context/DataContext";
-import { truncateStr } from "../utils/utility";
+import { handleFieldState, truncateStr } from "../utils/utility";
 import DelteItem from "./DelteItem";
 import Flag from "./Flag";
 import Packed from "./Packed";
 import { FaTimes } from "react-icons/fa";
+import Checkbox from "./Checkbox";
+import useMutateData from "../service/useMutateData";
 
 export default function Item({item}) {
   const {isSelect, isEdit, edit} = useDataContext()
+  const [pickItem, setPickItem] = useState(false)
+  const {mutate, status} = useMutateData({id: item._id, method: "PATCH"})
   const packed = item?.packed
   const priorityFlags = {
     high: "text-orange-500", 
@@ -24,7 +29,9 @@ export default function Item({item}) {
   return (
     <div className="tooltip w-fit">
         <li onClick={handleClick} className="item relative hover:bg-amber-400 bg px-4 w-fit cursor-pointer flex items-center gap-3 rounded-2xl">
-          {isSelect && <input type="checkbox" name="select" id="select" />}
+          {isSelect && <Checkbox state={item.selected} 
+                                 status={status} name={"select"}
+                                 handlePacked={()=>handleFieldState(setPickItem, pickItem, "selected", mutate)}/>}
           <div className="flex gap-1 items-center w-8">
             <Flag color={packed ? "text-green-500" : "text-yellow-500"} type={"status"} /> {/* STATUS: packed || unpacked */}
             <Flag color={priorityFlags[item?.priority]} type={"priority"} />
