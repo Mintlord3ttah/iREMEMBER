@@ -1,11 +1,15 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useMemo, useReducer } from "react";
 
 const Context = createContext()
 const initialState = {
     isSelect: false,
     isFavourite: false,
     isEdit: false,
-    itemToEdit: {}
+    itemToEdit: {},
+    sortStr: {},
+    sortOrder: "asc",
+    shouldFetch: false,
+    items: [],
 }
 
 function reducer(state, action){
@@ -16,14 +20,12 @@ function reducer(state, action){
                 isSelect: !state.isSelect
             }
         case "item/edit":
-            // console.log(action.payload, )
             return {
                 ...state,
                 isEdit: !state.isEdit,
                 itemToEdit: action.payload
             }
         case "item/set-favourite":
-            // console.log(action.payload)
             return {
                 ...state,
                 isFavourite: action.payload ? +action.payload : !state.isFavourite
@@ -33,6 +35,23 @@ function reducer(state, action){
                 ...state,
                 isFavourite: false
             }
+        case "sort/sort-str":
+            // console.log(action.payload)
+            return {
+                ...state,
+                sortStr: {sortField: action.payload, sortOrder: state.sortOrder}//state.sortOrder === "desc" ? "-" + action.payload : action.payload,
+                // shouldFetch: true,
+            }
+        case "sort/sort-order":
+            return {
+                ...state,
+                sortOrder: action.payload
+            }
+        case "items/fetch":
+            return {
+                ...state,
+                items: action.payload
+            }
         default:
             throw new Error("unknown action");
             
@@ -40,8 +59,7 @@ function reducer(state, action){
 }
 
 export default function DataContextProvider({children}) {
-    const [{isSelect, isFavourite, isEdit, itemToEdit}, dispatch] = useReducer(reducer, initialState)
-
+    const [{isSelect, isFavourite, isEdit, itemToEdit, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
     function select(){
         dispatch({type: "item/select"})
     }
@@ -54,6 +72,18 @@ export default function DataContextProvider({children}) {
     function edit(item={}){
         dispatch({type: "item/edit", payload: item})
     }
+    function getSortStr(str){
+        // console.log(str)
+        dispatch({type: "sort/sort-str", payload: str})
+    }
+    function getSortOrder(str){
+        dispatch({type: "sort/sort-order", payload: str})
+    }
+    function getAllItems(items){
+        dispatch({type: "items/fetch", payload: items})
+    }
+    // console.log(sortStr)
+    const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
   return <Context.Provider value={{
     select,
     isSelect,
@@ -62,7 +92,14 @@ export default function DataContextProvider({children}) {
     isFavourite,
     isEdit,
     edit,
-    itemToEdit
+    getSortStr,
+    getSortOrder,
+    memoizedSortStr,
+    itemToEdit,
+    sortOrder,
+    getAllItems,
+    items,
+    shouldFetch,
   }}>
     {children}
   </Context.Provider>

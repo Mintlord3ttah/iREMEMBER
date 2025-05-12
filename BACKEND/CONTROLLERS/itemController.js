@@ -28,19 +28,24 @@ export async function createItem(req, res, next){
 }
 
 export async function getAllItems(req, res, next) {
-     try{
-            const items = await Item.find(req.query)
-            res.status(200).json({
-            status: "success",
-            count: items.length,
-            data: {items}
-        })}catch(err){
-            res.status(404).json({
-                status: "fail",
-                message: err.message
-            })
-        }
-        next()
+    const sortField = req.query.sortField
+    const sortOrder = req.query.sortOrder || "asc"
+    console.log(sortField) // console
+    try{
+        // if(!sortField) return
+        const items = sortField ? await Item.find().sort([[ sortField, sortOrder ]]) : await Item.find()
+
+        res.status(200).json({
+        status: "success",
+        count: items.length,
+        data: {items}
+    })}catch(err){
+        res.status(404).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+    next()
 }
 
 export async function getItem(req, res, next){

@@ -2,10 +2,12 @@ import Favourite from "./Favourite";
 import Priority from "./Priority";
 import { useDataContext } from "../context/DataContext";
 import useMutateData from "../service/useMutateData";
+import { useEffect, useRef } from "react";
 
 export default function AddItemForm({setForm}) {
   const {resetIsFavourite, isFavourite} = useDataContext()
   const {mutate, status} = useMutateData({method: "POST"})  
+  const itemRef = useRef(null)
   
   async function handleSubmit(e){
     e.preventDefault()
@@ -24,11 +26,11 @@ export default function AddItemForm({setForm}) {
     e.target.reset = true
   }
 
-
+useEffect(()=>itemRef.current.focus(),[])
 
   return(<form onSubmit={handleSubmit} className="bg-amber-300 gap-3 h-full rounded-2xl border p-4 flex flex-col grow-1 justify-between" >
   <div className="flex justify-between items-center"><span>New Item</span> <Favourite /></div>
-  <input type="text" className="w-full bg-amber-100 rounded-sm h-8 px-2" name="item"  placeholder="Item Name" required/>
+  <input ref={itemRef} type="text" className="w-full bg-amber-100 rounded-sm h-8 px-2" name="item"  placeholder="Item Name" required/>
   <input type="text" className="w-full bg-amber-100 rounded-sm h-8 px-2" name="purpose" placeholder="Purpose"/>
   <input type="number" max={50} min={1} className="w-full bg-amber-100 rounded-sm h-8 px-2" name="count" placeholder="Count"/>
   <Priority width={"w-full"} />

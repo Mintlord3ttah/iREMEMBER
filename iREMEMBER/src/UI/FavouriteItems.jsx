@@ -7,6 +7,7 @@ export default function FavouriteItems() {
         queryKey: ["items"],
         queryFn: getItems,
     })
+
     const favourites = items?.filter(v=>v.favourite)
   return <div className="bg-amber-300 h-[202px] overflow-hidden rounded-2xl border p-4 flex flex-col gap-3" >
   <div className='overflow-y-scroll'>

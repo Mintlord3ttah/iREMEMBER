@@ -22,13 +22,13 @@ const GeneralMutation = memo(function GeneralMutation() {
 
     function handleClick(e){
         setEndpoint(e.target.value)
-        if(isSelect)select()
+        if(isSelect) select()
     }
 
     useEffect(()=>{endpoint.length && mutate(JSON.stringify({select: "null"}))},[endpoint]) // fake data to occupy the vaccum
 
-    return <select onChange={handleClick} defaultValue={"pack-all"} name="mutation" className="w-fit bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
-        <option className="font-bold">Select</option>
+    return <select onChange={handleClick} defaultValue={"Gen.Mutation"} name="mutation" className="w-fit bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
+        <option className="font-bold" value={"Gen.Mutation"}>Gen.Mutation</option>
         <option value="pack-all">Pack all</option>
         <option value="unpack-all">Unpack all</option>
         <option value="favourite-all" >Favourite all</option>

@@ -5,12 +5,9 @@ import WelcomeUI from './PAGES/WelcomeUI'
 import Application from './PAGES/Application'
 import Footer from './UI/Footer'
 import {BrowserRouter, Route, Routes} from "react-router-dom"
-import Overlay from './UI/Overlay'
+import { Toaster } from 'react-hot-toast';
 import DataContextProvider from './context/DataContext'
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
@@ -30,6 +27,7 @@ export default function App() {
     <DataContextProvider>
     <BrowserRouter>
       <Navigation />
+      <Toaster />
       {/* <Overlay /> */}
       <Routes>
         <Route element={<WelcomeUI />} path='/' />

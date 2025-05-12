@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import GreenBtn from "../UI/GreenBtn";
 import Heading from "../UI/Heading";
 import HowItWorksCard from "../UI/HowItWorksCard";
 
 export default function WelcomeUI() {
+    const navigate = useNavigate()
   return (
     <section className="flex flex-col gap-0 justify-center items-center px-8">
     <div className="h-screen flex justify-center items-center gap-8 flex-col w-[30rem] max-[510px]:w-full">
@@ -10,7 +12,7 @@ export default function WelcomeUI() {
             <span className="text-yellow-500"> important items</span> whenever you are stepping out</h1>
         <p className="text-center text-xl">Go your way with a peaceful mind and curb that nasty moment when you remember an important item and you've moved far away from home...</p>
         <div className="flex gap-4">
-            <GreenBtn>Get Started</GreenBtn>
+            <GreenBtn onClick={()=>navigate("/app")}>Get Started</GreenBtn>
             <GreenBtn bg="transparent">How it Works</GreenBtn>
         </div>
         </div>
@@ -61,7 +63,7 @@ export default function WelcomeUI() {
             </div>
     </div>
     <div className="max-w-[45rem] flex flex-col justify-center items-center gap-4 mt-16">
-        <h3 className="text-center text-5xl font-bold">Save your time and reduce mental stress as you go out</h3>
+        <h3 className="text-center text-5xl font-bold">Save time and reduce mental stress as you go out</h3>
         <GreenBtn>Get Started</GreenBtn>
     </div>
     </section>

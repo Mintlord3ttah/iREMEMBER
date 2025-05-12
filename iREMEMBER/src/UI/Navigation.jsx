@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import GreenBtn from "./GreenBtn";
 
 export default function Navigation() {
   const navigate = useNavigate()

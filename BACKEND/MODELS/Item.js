@@ -6,6 +6,18 @@ const itemSchema = mongoose.Schema({
         unique: [true, "Item already exist"],
         required: [true, "Item name cannot be empty"]
     },
+    packed: {
+        type: Boolean,
+        default: false
+    },
+    favourite: {
+        type: Boolean,
+        default: false
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    },
     purpose: String,
     count: {
         type: Number,
@@ -15,21 +27,9 @@ const itemSchema = mongoose.Schema({
         type: String,
         default: "normal",
     },
-    createdAt: {
-        type: Date,
-        default: Date.now()
-    },
     createdById: {
         type: String,
         required: [true, "Please provide the createdById"]
-    },
-    packed: {
-        type: Boolean,
-        default: false
-    },
-    favourite: {
-        type: Boolean,
-        default: false
     },
     selected: {
         type: Boolean,
