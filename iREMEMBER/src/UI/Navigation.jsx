@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
+import { truncateStr } from "../utils/utility";
 
 export default function Navigation() {
   const navigate = useNavigate()
@@ -8,15 +9,8 @@ export default function Navigation() {
       <div className="flex justify-between items-center border-b px-12 max-[600px]:px-4  py-4">
         <Logo />
 
-        <p>lordmint7@gmail.com</p>
+        <p>{truncateStr("lordmint7@gmail.com", 12)}</p>
         
-        {/* <div className="flex gap-2 ">
-          <GreenBtn onClick={()=>navigate("/app")} p="p-2">Login</GreenBtn>
-          <GreenBtn p="p-2" bg="transparent">Sign Up</GreenBtn>
-        </div> */}
-        {/* <div className="flex gap-4">
-            <GreenBtn p="p-2">+ ADD</GreenBtn>
-        </div> */}
       </div>
     </nav>
   )
