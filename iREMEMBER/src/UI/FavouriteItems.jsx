@@ -9,7 +9,7 @@ export default function FavouriteItems() {
     })
 
     const favourites = items?.filter(v=>v.favourite)
-  return <div className="bg-amber-300 h-fit overflow-hidden rounded-2xl border p-4 flex flex-col gap-3" >
+  return <div className="bg-amber-300 h-[202px] overflow-hidden rounded-2xl border p-4 flex flex-col gap-3" >
   <div className='overflow-y-scroll'>
   <h3 className="font-bold">Favourite Items</h3>
   {favourites?.map(v=> <p key={v.item}>{v.item}</p>)}
