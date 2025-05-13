@@ -20,7 +20,7 @@ export default function ItemsBoard() {
       </div>
     </div>:
     !isLoading && items?.length <= 0 ? <DivCenter sizeFull='size-full'>🚀 Add Items To Get Started! 🚀</DivCenter> :
-    <ul className="grid grid-cols-3 gap-y-1 max-[780px]:px-12 max-[715px]:px-4">
+    <ul className="grid grid-cols-3 max-[400px]:grid-cols-2 gap-y-1 max-[400px]:gap-y-4 max-[780px]:px-12 max-[715px]:px-4">
         {items?.map(v=> <Item key={v.item} item={v}/>)}
     </ul>}
   </>

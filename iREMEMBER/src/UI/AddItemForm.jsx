@@ -44,7 +44,7 @@ export default function AddItemForm({setForm, setOverlayFormControls}) {
 
 useEffect(()=>itemRef.current.focus(),[])
 
-  return(<form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className=" bg-amber-300 gap-3 h-full rounded-2xl border p-4 flex flex-col grow-1 justify-between" >
+  return(<form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className=" bg-amber-300 gap-3 h-fit rounded-2xl border p-4 flex flex-col grow-1 justify-between" >
   <div className="flex justify-between items-center">
     <div className="flex gap-3">
       <span>New Item</span>

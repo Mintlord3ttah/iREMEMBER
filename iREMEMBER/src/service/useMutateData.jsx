@@ -10,6 +10,7 @@ export default function useMutateData({id="", method, url=""}){
         mutationFn: (data)=>postData(id, method, data, url),
         onSuccess: (data) => {
             queryClient.invalidateQueries(["items"])
+            console.log(data)
             getAllItems(data.data.items)
             
             console.log(data);
