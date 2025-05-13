@@ -1,16 +1,12 @@
 import { useState } from "react";
-import AddItemForm from "../UI/AddItemForm";
 import EditItemForm from "../UI/EditItemForm";
-import GreenBtn from "../UI/GreenBtn";
 import Overlay from "../UI/Overlay";
 import { useDataContext } from "../context/DataContext";
 import ItemsBoard from "../UI/ItemsBoard";
 import Stats from "../UI/Stats";
 import FavouriteItems from "../UI/FavouriteItems";
 import GeneralMutation from "../UI/GeneralMutation";
-import Sorts from "../UI/Sorts";
 import Controllers from "../UI/Controllers";
-import { FaPlus } from "react-icons/fa";
 import FormControl from "../UI/FormControl";
 
 export default function Application() {
@@ -27,7 +23,7 @@ export default function Application() {
   }
   return (
     <>
-    <section className="relative grid grid-cols-[1fr_308px]  max-[780px]:grid-cols-1 overflow-hidden max-[780px]:grid-rows-1 gap-4 max-w-[60rem] bg-amber-200 m-auto min-h-[584px]">
+    <section className="relative grid grid-cols-[1fr_308px] max-[780px]:grid-cols-1 overflow-hidden max-[780px]:grid-rows-1 gap-4 max-w-[60rem] bg-amber-200 m-auto min-h-[584px]">
       <div className="relative flex flex-col gap-4 w-full p-8 max-[715px]:px-0 pr-0"> {/**px-8 */}
         <div className="flex gap-6 max-[845px]:justify-between items-center mb-4 max-[780px]:px-12 max-[715px]:px-4">
           <h3 className="max-[870px]:hidden max-[780px]:block max-[715px]:hidden max-[520px]:block text-2xl font-bold">ITEMS</h3>

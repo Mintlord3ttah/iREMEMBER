@@ -3,6 +3,7 @@ import Priority from './Priority'
 import Favourite from './Favourite'
 import { useDataContext } from '../context/DataContext'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import Packed from './Packed'
 
 export default function EditItemForm() {
   const {itemToEdit, isFavourite, setIsFavourite, resetIsFavourite, edit} = useDataContext()
@@ -58,7 +59,7 @@ export default function EditItemForm() {
   return <form onSubmit={handleSubmit} className='shadow-md-cstm w-[30rem] h-60 rounded-2xl bg-amber-400 flex flex-col gap-6 py-4'>
     <Input defaultValue={itemToEdit.item} label={"Item"} fontSize={"text-2xl"} />
     <Input defaultValue={itemToEdit.purpose} label={"Purpose"} />
-    <Input defaultValue={itemToEdit.count} label={"Count"} />
+    <Input defaultValue={itemToEdit.count} label={"Count"} extra={<Packed packed={itemToEdit.packed} id={itemToEdit._id} />} />
     <div className='flex gap-8 items-center px-4'>
     <Priority defaultValue={itemToEdit.priority} width={"w-fit"} />
     <label className="flex gap-2 items-center ">
@@ -72,9 +73,10 @@ export default function EditItemForm() {
   </form>
 }
 
-function Input({label, fontSize="text-lg", defaultValue}){
+function Input({label, fontSize="text-lg", defaultValue, extra}){
   return <label className={`border-b-2 border-amber-700 flex gap-4 items-center ${fontSize} px-3`}>
   <span className='font-bold'>{label}:</span>
   <input type="text" name={label.toLowerCase()} defaultValue={defaultValue} className="w-full bg-transparent outline-none" />
+  {extra}
 </label>
 }

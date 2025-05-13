@@ -22,7 +22,7 @@ export default function Item({item}) {
 
     function handleClick(e){
       // console.log(e.target.classList.contains("item") || e.target.closest(".edit").classList.contains("edit"))
-      const contains = e.target.classList.contains("item") || e.target.closest(".edit").classList.contains("edit")
+      const contains = e.target.classList?.contains("item") || e.target.closest(".edit").classList.contains("edit")
       console.log(contains)
       if(contains) edit(item)
     }
@@ -42,7 +42,7 @@ export default function Item({item}) {
             {truncateStr(item?.item, 7)}
             <DelteItem id={item?._id} />
         </li>
-        <div className="tooltip-text relative flex flex-col gap-3">
+        <div className="tooltip-text max-[400px]:hidden relative flex flex-col gap-3">
             <p><span className="font-bold">Item: </span>{item?.item}</p>
             <p><span className="font-bold">Purpose: </span>{item?.purpose ? item?.purpose : "NILL"}</p>
             <p><span className="font-bold">Priority:</span> <span className="text-amber-600">{item?.priority}</span></p>

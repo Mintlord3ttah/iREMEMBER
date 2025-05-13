@@ -5,6 +5,7 @@ import { handleFieldState } from "../utils/utility";
 import useMutateData from "../service/useMutateData";
 
 export default function Packed({packed, id}){
+  console.log(packed, id)
     const [isPacked, setIsPacked] = useState(false)
     const {mutate, status} = useMutateData({id, method: "PATCH"})  
 

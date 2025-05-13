@@ -11,6 +11,6 @@ export default function Overlay({children}) {
       }
   }
   return (
-    <div onClick={handleOverlay} className="overlay absolute top-0 left-0 flex justify-center items-center w-full h-full">{children}</div>
+    <div onClick={handleOverlay} className="overlay p-4 absolute top-0 left-0 flex justify-center items-center w-full h-full">{children}</div>
   )
 }

@@ -12,7 +12,7 @@ export default function WelcomeUI() {
             <span className="text-yellow-500"> important items</span> whenever you are stepping out</h1>
         <p className="text-center text-xl">Go your way with a peaceful mind and curb that nasty moment when you remember an important item and you've moved far away from home...</p>
         <div className="flex gap-4">
-            <GreenBtn onClick={()=>navigate("/app")}>Get Started</GreenBtn>
+            <GreenBtn onClick={()=>navigate("/Auth/Login")}>Get Started</GreenBtn>
             <GreenBtn bg="transparent">How it Works</GreenBtn>
         </div>
         </div>
