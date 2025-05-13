@@ -33,30 +33,36 @@
   
   .tooltip .tooltip-text {
     visibility: hidden;
+    opacity: 0;
     background-color: black;
     color: white;
-    /* text-align: center; */
     padding: 5px;
     border-radius: 5px;
     position: absolute;
     bottom: -100%;
-    /* right: -100%; */
     left: 110%;
     transform: translateY(40%);
-    opacity: 0;
     transition: opacity 0.3s;
     font-size: 0.8rem;
     min-width: 10rem;
     z-index: 10;
+
+    @media (width <=780px){
+      left: 0;
+      bottom: 0%;
+      transform: translateX(0%);
+      transform: translateY(100%);
+    }
   }
 
-  .hide, .delete{
+  .hide, .delete, .hide-forms{
     visibility:hidden;
     opacity: 0;
   }
   
   .tooltip:hover .tooltip-text,
-  .tooltip:hover .delete, .show {
+  .tooltip:hover .delete, .show,
+  .show-forms {
     visibility: visible;
     opacity: 1;
   }
@@ -122,3 +128,22 @@
 .bg{
   background-color: #faedbaa2;
 }
+
+.col-stats{
+  display: none;
+
+  @media (width <= 967px){
+    display: flex;
+  }
+}
+
+.row-stats{
+  @media (width <= 967px){
+    display: none;
+  }
+}
+
+.cstm-bg{
+  background-color: #0000002d;
+}
+

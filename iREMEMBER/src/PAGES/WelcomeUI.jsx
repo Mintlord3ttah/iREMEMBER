@@ -46,6 +46,14 @@ export default function WelcomeUI() {
             </HowItWorksCard>
             <HowItWorksCard>
                 <Heading>
+                    Add multiple items
+                </Heading>
+                <p>
+                    For speed you can add multiple items in one go by seperating each with a comma, but diplicates are removed.
+                </p>
+            </HowItWorksCard>
+            <HowItWorksCard>
+                <Heading>
                     Compare your list with items
                 </Heading>
                 <p>
