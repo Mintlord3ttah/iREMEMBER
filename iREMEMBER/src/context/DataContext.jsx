@@ -70,6 +70,7 @@ export default function DataContextProvider({children}) {
         dispatch({type: "item/reset-favourite"})
     }
     function edit(item={}){
+        console.log(item)
         dispatch({type: "item/edit", payload: item})
     }
     function getSortStr(str){
@@ -82,7 +83,7 @@ export default function DataContextProvider({children}) {
     function getAllItems(items){
         dispatch({type: "items/fetch", payload: items})
     }
-    // console.log(sortStr)
+    console.log(isEdit)
     const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
   return <Context.Provider value={{
     select,

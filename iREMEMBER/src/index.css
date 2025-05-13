@@ -146,7 +146,9 @@
     display: none;
   }
 }
-
+.bg-trans{
+  background-color: #fee68550;
+}
 .cstm-bg{
   background-color: #0000002d;
 }

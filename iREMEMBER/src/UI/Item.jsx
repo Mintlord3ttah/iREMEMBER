@@ -4,7 +4,7 @@ import { handleFieldState, truncateStr } from "../utils/utility";
 import DelteItem from "./DelteItem";
 import Flag from "./Flag";
 import Packed from "./Packed";
-import { FaTimes } from "react-icons/fa";
+import { FiEdit } from "react-icons/fi";
 import Checkbox from "./Checkbox";
 import useMutateData from "../service/useMutateData";
 
@@ -21,7 +21,9 @@ export default function Item({item}) {
     low: "text-orange-50"}
 
     function handleClick(e){
-      const contains = e.target.classList.contains("item")
+      // console.log(e.target.classList.contains("item") || e.target.closest(".edit").classList.contains("edit"))
+      const contains = e.target.classList.contains("item") || e.target.closest(".edit").classList.contains("edit")
+      console.log(contains)
       if(contains) edit(item)
     }
 
@@ -40,13 +42,16 @@ export default function Item({item}) {
             {truncateStr(item?.item, 7)}
             <DelteItem id={item?._id} />
         </li>
-        <div className="tooltip-text flex flex-col gap-3">
+        <div className="tooltip-text relative flex flex-col gap-3">
             <p><span className="font-bold">Item: </span>{item?.item}</p>
             <p><span className="font-bold">Purpose: </span>{item?.purpose ? item?.purpose : "NILL"}</p>
             <p><span className="font-bold">Priority:</span> <span className="text-amber-600">{item?.priority}</span></p>
             <p className="flex gap-1 items-center"><span className="font-bold">Count:</span> {item?.count} &#x2022; 
               <Packed packed={packed} id={item._id}/>
             </p>
+            <button onClick={handleClick} className="edit cursor-pointer size-8 text-xl backdrop-blur-2xl absolute top-0 right-0 bg-trans flex justify-center items-center">
+              <FiEdit />
+            </button>
         </div>
     </div>
   )

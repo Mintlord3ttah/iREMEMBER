@@ -26,6 +26,7 @@ export default function Application() {
     setOverlayFormControls(false)
   }
   return (
+    <>
     <section className="relative grid grid-cols-[1fr_308px]  max-[780px]:grid-cols-1 overflow-hidden max-[780px]:grid-rows-1 gap-4 max-w-[60rem] bg-amber-200 m-auto min-h-[584px]">
       <div className="relative flex flex-col gap-4 w-full p-8 max-[715px]:px-0 pr-0"> {/**px-8 */}
         <div className="flex gap-6 max-[845px]:justify-between items-center mb-4 max-[780px]:px-12 max-[715px]:px-4">
@@ -42,9 +43,6 @@ export default function Application() {
       <FormControl setForm={setForm} form={form} setOverlayFormControls={setOverlayFormControls} />
       <FavouriteItems />
       </div>
-      {isEdit && <Overlay>
-        <EditItemForm />
-      </Overlay>}
       </div>
       <div onClick={handleFormControl} className={`absolute ${OverlayFormControls ? "show-forms" : "hide-forms"} transition-all duration-[0.8s] hidden overflow-hidden shadow-xl w-full h-full max-[780px]:flex justify-end cstm-bg`}>
       <div className={`h-full transition-all duration-[0.8s] w-0 ${OverlayFormControls ? "w-7/12 opacity-100" : "w-0"} bg-amber-50 max-[510px]:w-9/12 max-[780px]:flex flex-col gap-4 p-4`}>
@@ -56,5 +54,9 @@ export default function Application() {
       </div>
       </div>
     </section>
+    {isEdit && <Overlay>
+        <EditItemForm />
+      </Overlay>}
+    </>
   )
 }

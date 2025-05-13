@@ -6,7 +6,7 @@ export default function Overlay({children}) {
   function handleOverlay(e){
     const overlay = e.target.classList.contains("overlay")
     if(overlay){ 
-      edit()
+      edit() // return overlay
       setIsFavourite("0")
       }
   }
