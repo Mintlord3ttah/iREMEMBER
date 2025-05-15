@@ -5,7 +5,7 @@ import { createUser,
         getUsers, 
         logoutUser, 
         sendVerificationEmail, 
-        storeToken, 
+        storeEmailToken, 
         updateUser, 
         verifyEmail } from "../CONTROLLERS/userController.js"
 
@@ -15,7 +15,7 @@ const user_router = express.Router()
 
 user_router.route("/")
 .get(getUsers)
-.post(createUser, sendVerificationEmail, storeToken)
+.post(createUser, sendVerificationEmail, storeEmailToken)
 
 user_router.route("/email/verify")
 .get(verifyEmail)

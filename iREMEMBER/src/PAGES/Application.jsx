@@ -8,10 +8,11 @@ import FavouriteItems from "../UI/FavouriteItems";
 import GeneralMutation from "../UI/GeneralMutation";
 import Controllers from "../UI/Controllers";
 import FormControl from "../UI/FormControl";
-import { getUser } from "../service/getUser";
+import { getUser, refreshAccessToken } from "../service/getUser";
+import GenLoader from "../UI/GenLoader";
 
 export default function Application() {
-  const {select, isEdit, isSelect, sessionId, getSession} = useDataContext()
+  const {select, isEdit, isSelect, getAccessToken, sessionId, getSession} = useDataContext()
   const [form, setForm] = useState(false)
   const [OverlayFormControls, setOverlayFormControls] = useState(false)
 
@@ -23,7 +24,7 @@ export default function Application() {
     setOverlayFormControls(false)
   }
 
-  useEffect(()=> getSession(getUser(sessionId)),[])
+ 
   return (
     <>
     <section className="relative grid grid-cols-[1fr_308px] max-[780px]:grid-cols-1 overflow-hidden max-[780px]:grid-rows-1 gap-4 max-w-[60rem] bg-amber-200 m-auto min-h-[584px]">

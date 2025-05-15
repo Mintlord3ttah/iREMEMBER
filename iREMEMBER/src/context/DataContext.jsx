@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createContext, useContext, useMemo, useReducer } from "react";
 
 const Context = createContext()
@@ -11,7 +12,9 @@ const initialState = {
     shouldFetch: false,
     items: [],
     session: {},
-    sessionId: "" // users id
+    sessionId: "", // users id
+    isSigningUpStatus: "",
+    accessToken: "",
 }
 
 function reducer(state, action){
@@ -55,14 +58,25 @@ function reducer(state, action){
                 items: action.payload
             }
         case "user/fetch":
+            const id = action.payload.split("")
+                       .map((v,i)=> i % 4 === 0 ? v + "." : v).join("")
+            const userid = `${crypto.randomUUID()}-${id}-tcvky$657789`
+            localStorage.setItem("joker", userid)
             return {
                 ...state,
-                sessionId: action.payload
+                isSigningUpStatus: "processing",
+                sessionId: localStorage.getItem("joker").split("-").at(-2).split(".").join(''),
             }
         case "user/session":
             return {
                 ...state,
-                session: action.payload
+                session: action.payload,
+                isSigningUpStatus: "success",
+            }
+        case "user/get-token":
+            return {
+                ...state,
+               accessToken: action.payload
             }
         default:
             throw new Error("unknown action");
@@ -71,7 +85,8 @@ function reducer(state, action){
 }
 
 export default function DataContextProvider({children}) {
-    const [{isSelect, isFavourite, isEdit, itemToEdit, sessionId, session, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
+    const [{isSelect, isFavourite, isEdit, isSigningUpStatus,
+           accessToken, itemToEdit, sessionId, session, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
     function select(){
         dispatch({type: "item/select"})
     }
@@ -99,11 +114,18 @@ export default function DataContextProvider({children}) {
         dispatch({type: "user/fetch", payload: id})
     }
     function getSession(session){
-    console.log({session})
-        dispatch({type: "user/session", payload: session})
+        dispatch({type: "user/session", payload: session[0]})
     }
-    console.log(isEdit)
+    function getAccessToken(token){
+        console.log(token)
+        dispatch({type: "user/get-token", payload: token})
+    }
     const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
+
+    useEffect(()=>{
+        if(isSigningUpStatus !== "success") return
+        localStorage.setItem("joker", null)
+    },[isSigningUpStatus])
   return <Context.Provider value={{
     select,
     isSelect,
@@ -124,6 +146,8 @@ export default function DataContextProvider({children}) {
     session,
     sessionId,
     getSession,
+    accessToken,
+    getAccessToken,
   }}>
     {children}
   </Context.Provider>
@@ -137,3 +161,4 @@ function useDataContext(){
 }
 
 export {useDataContext, DataContextProvider}
+

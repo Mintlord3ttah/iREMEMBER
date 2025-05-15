@@ -13,6 +13,7 @@ import {
 } from '@tanstack/react-query'
 import Login from './PAGES/Login'
 import Signup from './PAGES/Signup'
+import Processing from './PAGES/Processing'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,7 @@ export default function App() {
         <Route element={<Application />} path='/app' />
         <Route element={<Login />} path="/Auth/Login" />
         <Route element={<Signup />} path="/Auth/Signup" />
+        <Route element={<Processing />} path="/Processing" />
       </Routes>
       <Footer />
      </BrowserRouter>

@@ -23,7 +23,7 @@ export default function Signup() {
     if(!validEmail) return toast.error("Email is invalid")
     if(!validPassword) return toast.error("password must be at least 8 characters long, includes a number and a special character")
     
-    const user = {email, name: names, password, redirect: "http://localhost:5173/app"}
+    const user = {email, name: names, password, redirect: "http://localhost:5173/processing"}
     const response = await fetch("http://localhost:3000/api/v1/users/", {
       method: "POST",
       body: JSON.stringify(user),
