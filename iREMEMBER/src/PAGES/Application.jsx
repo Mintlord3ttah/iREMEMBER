@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditItemForm from "../UI/EditItemForm";
 import Overlay from "../UI/Overlay";
 import { useDataContext } from "../context/DataContext";
@@ -8,9 +8,10 @@ import FavouriteItems from "../UI/FavouriteItems";
 import GeneralMutation from "../UI/GeneralMutation";
 import Controllers from "../UI/Controllers";
 import FormControl from "../UI/FormControl";
+import { getUser } from "../service/getUser";
 
 export default function Application() {
-  const {select, isEdit, isSelect} = useDataContext()
+  const {select, isEdit, isSelect, sessionId, getSession} = useDataContext()
   const [form, setForm] = useState(false)
   const [OverlayFormControls, setOverlayFormControls] = useState(false)
 
@@ -21,6 +22,8 @@ export default function Application() {
     if(!e.target.classList.contains("absolute")) return
     setOverlayFormControls(false)
   }
+
+  useEffect(()=> getSession(getUser(sessionId)),[])
   return (
     <>
     <section className="relative grid grid-cols-[1fr_308px] max-[780px]:grid-cols-1 overflow-hidden max-[780px]:grid-rows-1 gap-4 max-w-[60rem] bg-amber-200 m-auto min-h-[584px]">

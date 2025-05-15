@@ -25,6 +25,8 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    emailToken: String,
+    emailVerified: Boolean,
 })
 
 // RETRIEVE PASSWORD

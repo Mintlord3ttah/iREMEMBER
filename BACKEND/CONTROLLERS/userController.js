@@ -1,7 +1,102 @@
 
 import { User } from "../MODELS/User.js"
 import { API } from "../utils/apiHandlers.js"
+import { generateToken } from "../utils/generateToken.js"
+import nodemailer from "nodemailer"
 
+let redirect;
+export async function sendVerificationEmail(req, res, next){  
+    console.log(req.body)
+    redirect = req.body.redirect
+    try{
+    const token = generateToken()  
+    const emailSender = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "iremember584@gmail.com",
+            pass: "xtuu zmjh rrxx oebp"
+        }
+    })
+    const verificationLink = `http://localhost:3000/api/v1/users/email/verify?token=${token}` // includes redirect
+    const mailOptions = {
+        from: "iremember584@gmail.com",
+        to: req.body.email,
+        subject: "Verify Your Email",
+        text: `Click the link to verify your email: ${verificationLink}`
+    };
+        emailSender.sendMail(mailOptions)
+        req.body.token = token
+
+        // await User.findByIdAndUpdate(userId, { emailToken: token });
+        // res.status(200).json({
+        //     status: "success",
+        // data: {message: "check your" +req.body.email +"for the verification link"}
+    // })
+    }catch(err){
+        console.log(err.meassage)
+       return res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+    next()
+}
+export async function storeToken(req, res, next){    
+    try{
+        const token = req.body.token
+        const user = await User.findOneAndUpdate({email: req.body.email}, { emailToken: token });
+        res.status(200).json({
+            status: "success",
+            data: {meassage: "please check your email for verification", id: user.id }
+        })
+    }catch(err){
+        res.status(404).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+    next()
+}
+
+export async function verifyEmail(req, res, next){  
+    const token = req.query.token  
+
+    try{
+        if(!token) throw new Error("Invalid token")
+        const user = await User.findOne({ emailToken: token }); 
+        if(!user) throw new Error("No user found for this token")
+        
+        user.emailToken = ""
+        user.emailVerified = true
+        user.isAuthenticated = true
+        await user.save()
+        res.status(200).redirect(redirect)
+        // .json({
+        // status: "success",
+        // data: {newUser}
+        // })
+    }catch(err){
+        res.status(404).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+    next()
+}
+export async function logoutUser(req, res, next){    
+    try{
+        const users = await User.findByIdAndUpdate(req.params, {isAuthenticated: false})
+        res.status(200).json({
+        status: "success",
+        data: {message: "Logout successfull"}
+    })}catch(err){
+        res.status(404).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+    next()
+}
 export async function getUsers(req, res, next){    
     try{
         const users = await User.find(req.query)
@@ -9,7 +104,7 @@ export async function getUsers(req, res, next){
         status: "success",
         data: {users}
     })}catch(err){
-        res.status(404).json({
+       return res.status(404).json({
             status: "fail",
             message: err.message
         })
@@ -23,12 +118,12 @@ export async function createUser(req, res, next){
         const user = await api.query
         // console.log()
         // const user = await User.create(req.body)
-        res.status(201).json({
-            status: "success",
-            data: {user}
-        })
+        // res.status(201).json({
+        //     status: "success",
+        //     data: {user}
+        // })
     }catch(err){
-        res.status(400).json({
+         return res.status(400).json({
             status: "fail",
             message: err.message
         })

@@ -1,5 +1,13 @@
 import express from "express"
-import { createUser, deleteUser, getUser, getUsers, updateUser } from "../CONTROLLERS/userController.js"
+import { createUser, 
+        deleteUser, 
+        getUser, 
+        getUsers, 
+        logoutUser, 
+        sendVerificationEmail, 
+        storeToken, 
+        updateUser, 
+        verifyEmail } from "../CONTROLLERS/userController.js"
 
 
 // USERS ROUTE HANDLERS
@@ -7,7 +15,13 @@ const user_router = express.Router()
 
 user_router.route("/")
 .get(getUsers)
-.post(createUser)
+.post(createUser, sendVerificationEmail, storeToken)
+
+user_router.route("/email/verify")
+.get(verifyEmail)
+
+user_router.route("/logout/:id")
+.patch(logoutUser)
 
 user_router.route("/:id")
 .get(getUser)

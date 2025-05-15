@@ -10,6 +10,8 @@ const initialState = {
     sortOrder: "asc",
     shouldFetch: false,
     items: [],
+    session: {},
+    sessionId: "" // users id
 }
 
 function reducer(state, action){
@@ -52,6 +54,16 @@ function reducer(state, action){
                 ...state,
                 items: action.payload
             }
+        case "user/fetch":
+            return {
+                ...state,
+                sessionId: action.payload
+            }
+        case "user/session":
+            return {
+                ...state,
+                session: action.payload
+            }
         default:
             throw new Error("unknown action");
             
@@ -59,7 +71,7 @@ function reducer(state, action){
 }
 
 export default function DataContextProvider({children}) {
-    const [{isSelect, isFavourite, isEdit, itemToEdit, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
+    const [{isSelect, isFavourite, isEdit, itemToEdit, sessionId, session, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
     function select(){
         dispatch({type: "item/select"})
     }
@@ -83,6 +95,13 @@ export default function DataContextProvider({children}) {
     function getAllItems(items){
         dispatch({type: "items/fetch", payload: items})
     }
+    function getUserId(id){
+        dispatch({type: "user/fetch", payload: id})
+    }
+    function getSession(session){
+    console.log({session})
+        dispatch({type: "user/session", payload: session})
+    }
     console.log(isEdit)
     const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
   return <Context.Provider value={{
@@ -101,6 +120,10 @@ export default function DataContextProvider({children}) {
     getAllItems,
     items,
     shouldFetch,
+    getUserId,
+    session,
+    sessionId,
+    getSession,
   }}>
     {children}
   </Context.Provider>

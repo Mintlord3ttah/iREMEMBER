@@ -29,7 +29,7 @@ export default function App() {
     <DataContextProvider>
     <BrowserRouter>
       <Navigation />
-      {/* <Toaster /> */}
+      <Toaster />
       {/* <Overlay /> */}
       <Routes>
         <Route element={<WelcomeUI />} path='/' />
