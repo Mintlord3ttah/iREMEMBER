@@ -4,25 +4,27 @@ import { API } from "../utils/apiHandlers.js"
 import { generateEmailToken } from "../utils/generateEmailToken.js"
 import nodemailer from "nodemailer"
 import { generateUserTokens } from "../utils/generateUserTokens.js";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken"
+
+dotenv.config({ path: "./config.env" });
 
 let redirect;
 
-// export async function tokenRotation(req, res, next){    
-//     try{
-//         const token = req.body.token
-//         const user = await User.findOneAndUpdate({email: req.body.email}, { emailToken: token });
-//         res.status(200).json({
-//             status: "success",
-//             data: {meassage: "please check your email for verification", id: user.id }
-//         })
-//     }catch(err){
-//         res.status(404).json({
-//             status: "fail",
-//             message: err.message
-//         })
-//     }
-//     next()
-// }
+export async function tokenRotation(req, res) {
+    const refreshToken = req.cookies.refreshToken
+    if (!refreshToken) return res.status(401).send("No refresh token provided.");
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
+        if (err) return res.status(403).send("Invalid refresh token.");
+
+        const newAccessToken = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+        const updatedUser = await User.findOneAndUpdate({ refreshToken: refreshToken }, {$set: {accessToken: newAccessToken}}, {new: true});
+        // if (!updatedUser) return res.status(404).send("User not found.");
+        res.json({ accessToken: newAccessToken, user: updatedUser });
+
+    });
+}
 export async function createUser(req, res, next){
     try{
         const api = new API(User, req)
@@ -44,10 +46,9 @@ export async function createUser(req, res, next){
     next()
 }
 export async function sendVerificationEmail(req, res, next){  
-    console.log(req.body)
     redirect = req.body.redirect
     try{
-    const token = generateToken()  
+    const token = generateEmailToken()  
     const emailSender = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -65,11 +66,6 @@ export async function sendVerificationEmail(req, res, next){
         emailSender.sendMail(mailOptions)
         req.body.token = token
 
-        // await User.findByIdAndUpdate(userId, { emailToken: token });
-        // res.status(200).json({
-        //     status: "success",
-        // data: {message: "check your" +req.body.email +"for the verification link"}
-    // })
     }catch(err){
         console.log(err.meassage)
        return res.status(400).json({
@@ -85,7 +81,7 @@ export async function storeEmailToken(req, res, next){
         const user = await User.findOneAndUpdate({email: req.body.email}, { emailToken: token });
         res.status(200).json({
             status: "success",
-            data: {meassage: "please check your email for verification", id: user.id }
+            data: {message: "please check your email for verification", id: user._id }
         })
     }catch(err){
         res.status(404).json({
@@ -103,19 +99,15 @@ export async function verifyEmail(req, res, next){
         if(!token) throw new Error("Invalid token")
         const user = await User.findOne({ emailToken: token }); 
         if(!user) throw new Error("No user found for this token")
-        const {refreshToken, accessToken} = generateUserTokens(user, res)
-        
+        const {refreshToken, accessToken} = await generateUserTokens(user, res)
+    
         user.emailToken = ""
         user.emailVerified = true
         user.isAuthenticated = true
-        // user.accessToken = accessToken
-        // user.refreshToken = refreshToken
+        user.accessToken = accessToken
+        user.refreshToken = refreshToken
         await user.save()
         res.status(200).redirect(redirect)
-        // .json({
-        // status: "success",
-        // data: {newUser}
-        // })
     }catch(err){
         res.status(404).json({
             status: "fail",
@@ -153,6 +145,23 @@ export async function getUsers(req, res, next){
     next()
 }
 
+export async function getUserByToken(req, res, next){
+    console.log(req.query.token)
+    try{
+        const user = await User.findOne({accessToken: req.query.token})
+        res.status(200).json({
+            status: "success",
+            data: {user}
+        })
+    }catch(err){
+        res.status(404).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+
+    next()
+}
 export async function getUser(req, res, next){
     try{
         const user = await User.findById(req.params.id)

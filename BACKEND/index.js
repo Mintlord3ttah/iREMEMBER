@@ -2,11 +2,16 @@ import express from 'express'
 import cors from "cors"
 import item_router from './ROUTES/itemsRouter.js'
 import user_router from './ROUTES/usersRouter.js'
+import cookieParser from 'cookie-parser'
 
 export const app = express()
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5173", // Specify frontend origin
+    credentials: true // Allow cookies and authentication headers
+}))
 app.use(express.json()) // to parse json data from the request body
 app.use(express.urlencoded({extended: true})) // to parse urlencoded data from the request body
+app.use(cookieParser()) // to parse cookies from the request headers
 
 
 // ALL ROUTES BELOW

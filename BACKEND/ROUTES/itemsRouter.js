@@ -1,9 +1,11 @@
 import express from "express"
-import { createItem, deleteAllItems, deleteItem, deleteItems, getAllItems, getItem, updateItem, updateItems } from "../CONTROLLERS/itemController.js"
+import { authenticateToken, createItem, deleteAllItems, deleteItem, deleteItems, getAllItems, getItem, updateItem, updateItems } from "../CONTROLLERS/itemController.js"
 
 
 // ITEM ROUTE HANDLERS
 const item_router = express.Router()
+
+item_router.use(authenticateToken)
 
 item_router.route("/")
 .get(getAllItems)

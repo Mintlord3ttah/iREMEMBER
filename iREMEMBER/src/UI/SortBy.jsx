@@ -3,10 +3,10 @@ import { useDataContext } from '../context/DataContext'
 import { getItems, sortItems } from '../service/getItems'
 
 export default function SortBy({children}){
-const {memoizedSortStr, getSortStr} = useDataContext()
+const {memoizedSortStr, getSortStr, currentUser} = useDataContext()
     const {data: items, refetch} = useQuery({
         queryKey: ["items"],
-        queryFn: ()=> sortItems(memoizedSortStr),
+        queryFn: ()=> sortItems(memoizedSortStr, currentUser._id),
         enabled: !!memoizedSortStr?.sortField
     })    
 

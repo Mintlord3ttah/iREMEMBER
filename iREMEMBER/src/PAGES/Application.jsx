@@ -9,12 +9,19 @@ import GeneralMutation from "../UI/GeneralMutation";
 import Controllers from "../UI/Controllers";
 import FormControl from "../UI/FormControl";
 import { getUser, refreshAccessToken } from "../service/getUser";
-import GenLoader from "../UI/GenLoader";
+import ProcessUI from "../UI/ProcessUI";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+
+let timerId = null
 
 export default function Application() {
-  const {select, isEdit, isSelect, getAccessToken, sessionId, getSession} = useDataContext()
+  const {select, isEdit, isSelect, getAccessToken, currentUser, getCurrentUser} = useDataContext()
   const [form, setForm] = useState(false)
   const [OverlayFormControls, setOverlayFormControls] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   function handleSelect(e){
     select()
@@ -24,7 +31,66 @@ export default function Application() {
     setOverlayFormControls(false)
   }
 
- 
+  async function rotateAccessToken(){
+    const accessToken = localStorage.getItem("accessToken")
+    if(!accessToken) await refreshAccessToken();
+    const { exp } = JSON.parse(atob(accessToken.split(".")[1])); // Decode JWT expiry time
+    if (Date.now() >= exp * 1000){
+      const res = await refreshAccessToken();
+      if(res){
+        console.log("Token refreshed")
+        const newAcessToken = localStorage.getItem("accessToken")
+        getAccessToken(newAcessToken)
+        return
+      } 
+    }
+  }
+
+  useEffect(()=>{
+          async function user() {
+            try{
+                setLoading(true)
+                rotateAccessToken()
+                const newToken = localStorage.getItem("accessToken")
+                getAccessToken(newToken)
+                const currUser = await getUser(`user?token=${newToken}`)
+                // console.log({currUser})
+                getCurrentUser(currUser)
+                setLoading(false)
+            }catch(error){
+              // console.log(error.message)
+              setLoading(false)
+            }
+          }
+          user()
+      },[])
+
+  useEffect(()=>{
+    async function rotateTokens(){
+      console.log("Token rotation started")
+      const storedAcessToken = localStorage.getItem("accessToken")
+      if(storedAcessToken){
+        rotateAccessToken(storedAcessToken) 
+        getAccessToken(storedAcessToken)
+        return
+      }
+      const res = await refreshAccessToken()
+      console.log({res})
+      if(!res) return window.location.href = "/Auth/Signup"
+      getAccessToken(res)
+    }
+    clearInterval(timerId)
+    timerId = setInterval(async () => {
+      const res = await rotateTokens()
+      if(res){
+        const newAcessToken = localStorage.getItem("accessToken")
+        getAccessToken(newAcessToken)
+        return
+      }
+    },  15 * 60 * 1000); // Check every 5 minutes
+  },[timerId])
+
+  if(loading || !currentUser?._id) return <ProcessUI />
   return (
     <>
     <section className="relative grid grid-cols-[1fr_308px] max-[780px]:grid-cols-1 overflow-hidden max-[780px]:grid-rows-1 gap-4 max-w-[60rem] bg-amber-200 m-auto min-h-[584px]">

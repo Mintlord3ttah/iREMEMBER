@@ -35,9 +35,9 @@ export default function App() {
       <Routes>
         <Route element={<WelcomeUI />} path='/' />
         <Route element={<Application />} path='/app' />
-        <Route element={<Login />} path="/Auth/Login" />
-        <Route element={<Signup />} path="/Auth/Signup" />
-        <Route element={<Processing />} path="/Processing" />
+        <Route element={<Login />} path="/auth/login" />
+        <Route element={<Signup />} path="/auth/signup" />
+        <Route element={<Processing />} path="/auth/processing" />
       </Routes>
       <Footer />
      </BrowserRouter>

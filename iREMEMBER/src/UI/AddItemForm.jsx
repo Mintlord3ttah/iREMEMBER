@@ -5,8 +5,8 @@ import useMutateData from "../service/useMutateData";
 import { useEffect, useRef } from "react";
 
 export default function AddItemForm({setForm, setOverlayFormControls}) {
-  const {resetIsFavourite, isFavourite} = useDataContext()
-  const {mutate, status} = useMutateData({method: "POST"})  
+  const {resetIsFavourite, isFavourite, currentUser} = useDataContext()
+  const {mutate, status} = useMutateData({method: "POST", id: ""})  
   const itemRef = useRef(null)
   
   async function handleSubmit(e){
@@ -19,15 +19,15 @@ export default function AddItemForm({setForm, setOverlayFormControls}) {
     const packed = formData.get("pack") === "on" ? true : false
     const priority = formData.get("priority").includes("priority:") ? "normal" : formData.get("priority") 
     
-    const deps = {purpose, count, packed, priority, createdById: 1, favourite: isFavourite}
+    const deps = {purpose, count, packed, priority, createdById: currentUser?._id, favourite: isFavourite}
     const items = item.split(",")
     
     let obj = items.length > 1 ? 
               [...new Set(items)]
               .map(item => ({item, ...deps})) :
               {item, ...deps}
-    console.log(obj)
-    mutate(JSON.stringify(obj))
+    // console.log(obj)
+    await mutate(JSON.stringify(obj))
     resetIsFavourite()
     setForm(false)
     setOverlayFormControls(false)

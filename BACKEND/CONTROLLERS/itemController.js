@@ -1,5 +1,8 @@
 import { Item } from "../MODELS/Item.js"
+import { User } from "../MODELS/User.js"
 import { API } from "../utils/apiHandlers.js"
+import jwt from "jsonwebtoken"
+
 
 export function parsBody(req, res, next){
     JSON.parse(req.body)
@@ -27,13 +30,31 @@ export async function createItem(req, res, next){
     next()
 }
 
+export async function authenticateToken(req, res, next) {
+    const token = req.headers.authorization?.split(" ")[1]; // Extract token from "Bearer <token>"
+    console.log(token)
+    if (!token) {
+        return res.status(401).json({ message: "Access Denied. No Token Provided." });
+    }
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: "Invalid or Expired Token." });
+        }
+
+        const userFound = User.findOne({accessToken: token})
+        req.user = userFound; // Attach user data to request
+        next(); // Proceed to the next middleware or route
+    });
+}
+
 export async function getAllItems(req, res, next) {
-    const sortField = req.query.sortField
+    const userId = req.query.userId
+    if(!userId) return res.status(400).json({status: "fail", message: "No userId provided"})
+    const sortField = req.query.sortField || "createdAt"
     const sortOrder = req.query.sortOrder || "asc"
-    console.log(sortField) // console
     try{
-        // if(!sortField) return
-        const items = sortField ? await Item.find().sort([[ sortField, sortOrder ]]) : await Item.find()
+        const items = sortField ? await Item.find({createdById: userId}).sort([[ sortField, sortOrder ]]) : await Item.find({createdById: userId})
 
         res.status(200).json({
         status: "success",

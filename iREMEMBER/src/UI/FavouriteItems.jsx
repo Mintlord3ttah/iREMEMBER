@@ -1,11 +1,15 @@
 import React from 'react'
 import { getItems } from '../service/getItems'
 import { useQuery } from '@tanstack/react-query'
+import { useDataContext } from '../context/DataContext'
 
 export default function FavouriteItems() {
+      const {currentUser} = useDataContext()
+  const accessToken = localStorage.getItem("accessToken")
+
     const {data: items} = useQuery({
         queryKey: ["items"],
-        queryFn: getItems,
+        queryFn: ()=>getItems({accessToken, id: currentUser?._id}),
     })
 
     const favourites = items?.filter(v=>v.favourite)

@@ -2,11 +2,15 @@ import React from 'react'
 import StatsNumber from './StatsNumber'
 import { getItems } from '../service/getItems'
 import { useQuery } from '@tanstack/react-query'
+import { useDataContext } from '../context/DataContext'
 
 export default function Stats() {
+    const {currentUser} = useDataContext()
+  const accessToken = localStorage.getItem("accessToken")
+
     const {data: items} = useQuery({
         queryKey: ["items"],
-        queryFn: getItems,
+        queryFn: ()=>getItems({accessToken, id: currentUser?._id}),
     })
 
     const total = items?.length

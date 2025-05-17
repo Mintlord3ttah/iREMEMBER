@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react"
 import { useDataContext } from "../context/DataContext"
 import { refreshAccessToken } from "../service/getUser"
+import ProcessUI from "../UI/ProcessUI"
+import toast from "react-hot-toast"
 
 export default function Processing() {
-  const [isProcessing, setIsProcessing] = useState(false)
+  // const [isProcessing, setIsProcessing] = useState(false)
   const {getAccessToken} = useDataContext()
     
   useEffect(()=>{
      async function manageTokens(){
-       setIsProcessing(true)
        const storedAcessToken = localStorage.getItem("accessToken")
-       console.log({storedAcessToken})
+      //  getcurrentUser(userId)
        if(storedAcessToken){
          // function checkTokenExpiration() {
              const { exp } = JSON.parse(atob(storedAcessToken.split(".")[1])); // Decode JWT expiry time
@@ -21,8 +22,7 @@ export default function Processing() {
                  if(res){
                     const newAcessToken = localStorage.getItem("accessToken")
                     getAccessToken(newAcessToken)
-                    setIsProcessing(false)
-                    return
+                    return window.location.href = "/app"
                  } 
              } 
              getAccessToken(storedAcessToken)
@@ -31,14 +31,16 @@ export default function Processing() {
              // setInterval(checkTokenExpiration, 5 * 60 * 1000); // Check every 5 minutes
        }
        const res = await refreshAccessToken()
-       setIsProcessing(!res)
+       if(res){
+        window.location.href = "/app"
+        getAccessToken(res)
+       }  else {
+         window.location.href = "/auth/login"
+         toast("Please login to continue")
+       }
      }
      manageTokens()
     },[])
    
-   return <div className="flex flex-col gap-4 justify-center items-center h-screen">
-     <p>Please Wait while we process your data</p>
-     <div className='gen-loader mt-12'></div>
-     <p className="text-2xl font-bold">Loading...</p>
-   </div>
+   return <ProcessUI />
 }

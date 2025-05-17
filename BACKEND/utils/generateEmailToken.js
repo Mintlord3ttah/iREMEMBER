@@ -1,6 +1,6 @@
 // const crypto = require("crypto");
 import crypto from "crypto"
 
-export function generateToken() {
+export function generateEmailToken() {
     return crypto.randomBytes(32).toString("hex");
 }

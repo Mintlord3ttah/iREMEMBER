@@ -9,6 +9,7 @@ import Checkbox from "./Checkbox";
 import useMutateData from "../service/useMutateData";
 
 export default function Item({item}) {
+  console.log(item)
   const {isSelect, isEdit, edit} = useDataContext()
   const [pickItem, setPickItem] = useState(false)
   const {mutate, status} = useMutateData({id: item._id, method: "PATCH"})
@@ -21,8 +22,8 @@ export default function Item({item}) {
     low: "text-orange-50"}
 
     function handleClick(e){
-      // console.log(e.target.classList.contains("item") || e.target.closest(".edit").classList.contains("edit"))
-      const contains = e.target.classList?.contains("item") || e.target.closest(".edit").classList.contains("edit")
+      console.log(e.target)
+      const contains = e.target?.classList?.contains("item") || e.target.closest(".edit").classList.contains("edit")
       console.log(contains)
       if(contains) edit(item)
     }

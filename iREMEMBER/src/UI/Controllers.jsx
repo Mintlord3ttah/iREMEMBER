@@ -10,7 +10,7 @@ export default function Controllers({handleSelect, isSelect, setOverlayFormContr
     <GeneralMutation />
   </div>
     <Sorts />
-    <label htmlFor="select" className="flex gap-2 ">
+    <label htmlFor="select" className="flex gap-2 border rounded-sm px-2 py-0.5 hover:bg-amber-400 cursor-pointer">
     <input type="checkbox" onClick={handleSelect} defaultChecked={isSelect} name="select" id="select" />
     <span>select</span>
     </label>

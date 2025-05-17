@@ -4,7 +4,17 @@ import Heading from "../UI/Heading";
 import HowItWorksCard from "../UI/HowItWorksCard";
 
 export default function WelcomeUI() {
+    const storedId = localStorage.getItem("joker")
+    const storedAccessToken = localStorage.getItem("accessToken")
+    const verify = storedAccessToken && storedId
     const navigate = useNavigate()
+
+    function handleClick(){
+        if(!verify) return navigate("/Auth/Login")
+        navigate("/app")
+    }
+
+    
   return (
     <section className="flex flex-col gap-0 justify-center items-center px-8">
     <div className="h-screen flex justify-center items-center gap-8 flex-col w-[30rem] max-[510px]:w-full">
@@ -12,8 +22,8 @@ export default function WelcomeUI() {
             <span className="text-yellow-500"> important items</span> whenever you are stepping out</h1>
         <p className="text-center text-xl">Go your way with a peaceful mind and curb that nasty moment when you remember an important item and you've moved far away from home...</p>
         <div className="flex gap-4">
-            <GreenBtn onClick={()=>navigate("/Auth/Login")}>Get Started</GreenBtn>
-            <GreenBtn bg="transparent">How it Works</GreenBtn>
+            <GreenBtn onClick={handleClick}>Get Started</GreenBtn>
+            <GreenBtn bg="transparent">How It Works</GreenBtn>
         </div>
         </div>
 

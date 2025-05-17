@@ -2,10 +2,12 @@ import express from "express"
 import { createUser, 
         deleteUser, 
         getUser, 
+        getUserByToken, 
         getUsers, 
         logoutUser, 
         sendVerificationEmail, 
         storeEmailToken, 
+        tokenRotation, 
         updateUser, 
         verifyEmail } from "../CONTROLLERS/userController.js"
 
@@ -20,8 +22,14 @@ user_router.route("/")
 user_router.route("/email/verify")
 .get(verifyEmail)
 
+user_router.route("/user")
+.get(getUserByToken)
+
 user_router.route("/logout/:id")
 .patch(logoutUser)
+
+user_router.route("/refresh-token")
+.post(tokenRotation)
 
 user_router.route("/:id")
 .get(getUser)

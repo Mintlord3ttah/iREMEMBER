@@ -27,7 +27,18 @@ const userSchema = new mongoose.Schema({
     },
     emailToken: String,
     emailVerified: Boolean,
-    // accessToken: String,
+    accessToken: {
+        type: String,
+        default: "",
+    },
+    refreshToken: {
+        type: String,
+        default: "",
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
 })
 
 // RETRIEVE PASSWORD
