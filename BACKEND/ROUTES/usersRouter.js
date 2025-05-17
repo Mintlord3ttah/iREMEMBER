@@ -29,7 +29,7 @@ user_router.route("/user")
 user_router.route("/logout/:id")
 .patch(logoutUser)
 
-user_router.route("/login")
+user_router.route("/user/user/login")
 .post(validateLogin)
 
 user_router.route("/refresh-token")
