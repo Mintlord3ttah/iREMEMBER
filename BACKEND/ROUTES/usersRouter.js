@@ -9,6 +9,7 @@ import { createUser,
         storeEmailToken, 
         tokenRotation, 
         updateUser, 
+        validateLogin, 
         verifyEmail } from "../CONTROLLERS/userController.js"
 
 
@@ -27,6 +28,9 @@ user_router.route("/user")
 
 user_router.route("/logout/:id")
 .patch(logoutUser)
+
+user_router.route("/login")
+.post(validateLogin)
 
 user_router.route("/refresh-token")
 .post(tokenRotation)

@@ -25,6 +25,30 @@ export async function tokenRotation(req, res) {
 
     });
 }
+export async function validateLogin(req, res) {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).send("Email and password are required.");
+
+    const getUser = User.findOne({ email });
+    if (!getUser) return res.status(404).send("User not found.");
+    // RETRIEVE PASSWORD
+    const user = await getUser.select('+password').exec();
+    console.log(user.password, password)
+    
+    if (user.password !== password) return res.status(401).send("Invalid password.");
+    if (!user.emailVerified) return res.status(403).send("Email not verified.");
+    // if (!user.isAuthenticated) return res.status(403).send("User not authenticated.");
+    const { refreshToken, accessToken } = await generateUserTokens(user, res);
+    user.refreshToken = refreshToken;
+    user.accessToken = accessToken;
+    const LoggedIn = await user.save();
+    res.status(200).json({
+        status: "success",
+        data: { user: LoggedIn }
+    });
+}
+
+
 export async function createUser(req, res, next){
     try{
         const api = new API(User, req)
