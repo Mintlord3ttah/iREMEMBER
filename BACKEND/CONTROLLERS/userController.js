@@ -33,7 +33,6 @@ export async function validateLogin(req, res) {
     if (!getUser) return res.status(404).json({error: "User not found."})
     // RETRIEVE PASSWORD
     const user = await getUser.select('+password').exec();
-    // console.log(user.password, password)
     
     if (user.password !== password) return res.status(401).json({error: "Invalid password."});
     if (!user.emailVerified) return res.status(403).json({error: "Email not verified."});
@@ -41,7 +40,6 @@ export async function validateLogin(req, res) {
     user.refreshToken = refreshToken;
     user.accessToken = accessToken;
     const LoggedInUser = await user.save();
-    console.log({oldtoken: user, accessToken})
     res.status(200).json({
         status: "success",
         data: { user: LoggedInUser, message: "Login successful" }

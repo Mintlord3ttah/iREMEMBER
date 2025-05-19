@@ -1,5 +1,7 @@
 import toast from "react-hot-toast"
 
+const BACKEND_URL="https://irem-backend.onrender.com/api/v1/users"
+
 export async function handleFormSubmit(e, placeholder=""){
   // console.log({placeholder})
   e.preventDefault()
@@ -19,7 +21,7 @@ export async function handleFormSubmit(e, placeholder=""){
     
     const user = {email, name: names, password, redirect: "http://localhost:5173/auth/processing"}
     try{
-      const response = await fetch(`http://localhost:3000/api/v1/users/${placeholder}`, {
+      const response = await fetch(`${BACKEND_URL}/${placeholder}`, {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
