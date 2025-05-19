@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser'
 
 export const app = express()
 app.use(cors({
-    origin: "http://localhost:5173", // Specify frontend origin
+    origin: "https://iremember-eight.vercel.app", // Specify frontend origin
     credentials: true // Allow cookies and authentication headers
 }))
 app.use(express.json()) // to parse json data from the request body
