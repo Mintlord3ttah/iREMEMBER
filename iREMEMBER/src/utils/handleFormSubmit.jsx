@@ -1,6 +1,7 @@
 import toast from "react-hot-toast"
 
-export async function handleFormSubmit(e, placehoder=""){
+export async function handleFormSubmit(e, placeholder=""){
+  // console.log({placeholder})
   e.preventDefault()
     const formData = new FormData(e.target)
     const names = formData.get("names")
@@ -12,13 +13,13 @@ export async function handleFormSubmit(e, placehoder=""){
     const validPassword = passwordRegEx.test(password)
     const validEmail = emailRegEx.test(email) && email.includes(".com")
 
-    if(names?.length <= 2 || !placehoder) return toast.error("name legnth is too short")
+    if(names?.length <= 2 || !placeholder) return toast.error("name legnth is too short")
     if(!validEmail) return toast.error("Email is invalid")
     if(!validPassword) return toast.error("password must be at least 8 characters long, includes a number and a special character")
     
     const user = {email, name: names, password, redirect: "http://localhost:5173/auth/processing"}
     try{
-      const response = await fetch(`http://localhost:3000/api/v1/users/${placehoder}`, {
+      const response = await fetch(`http://localhost:3000/api/v1/users/${placeholder}`, {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
@@ -27,12 +28,11 @@ export async function handleFormSubmit(e, placehoder=""){
     })
     
     const data = await response.json()
-    const id = data.data?.id
     const message = data.data?.message
-    if(!id) throw new Error("User already exists please sign in")
+    const error = data?.error
+    if(error) throw new Error(error)
     toast.success(message)
-    getUserId(id)
-    console.log(data)
+    // console.log(data)
     e.target.reset()
     return data?.data
     }catch(error){

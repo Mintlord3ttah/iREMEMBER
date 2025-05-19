@@ -23,12 +23,13 @@ export default function Processing() {
                     const newAcessToken = localStorage.getItem("accessToken")
                     getAccessToken(newAcessToken)
                     return window.location.href = "/app"
-                 } 
+                 } else {
+                    window.location.href = "/auth/login"
+                    toast("Please login to continue")
+                 }
              } 
              getAccessToken(storedAcessToken)
-             window.location.href = "/app"
-         // }
-             // setInterval(checkTokenExpiration, 5 * 60 * 1000); // Check every 5 minutes
+             return window.location.href = "/app"
        }
        const res = await refreshAccessToken()
        if(res){

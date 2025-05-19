@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 let timerId = null
 
 export default function Application() {
-  const {select, isEdit, isSelect, getAccessToken, currentUser, getCurrentUser} = useDataContext()
+  const {select, isEdit, isSelect, getAccessToken, currentUser, signingType, getCurrentUser} = useDataContext()
   const [form, setForm] = useState(false)
   const [OverlayFormControls, setOverlayFormControls] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -38,7 +38,7 @@ export default function Application() {
     if (Date.now() >= exp * 1000){
       const res = await refreshAccessToken();
       if(res){
-        console.log("Token refreshed")
+        // console.log("Token refreshed")
         const newAcessToken = localStorage.getItem("accessToken")
         getAccessToken(newAcessToken)
         return
@@ -47,40 +47,43 @@ export default function Application() {
   }
 
   useEffect(()=>{
-          async function user() {
-            try{
-                setLoading(true)
-                rotateAccessToken()
-                const newToken = localStorage.getItem("accessToken")
-                getAccessToken(newToken)
-                const currUser = await getUser(`user?token=${newToken}`)
-                // console.log({currUser})
-                getCurrentUser(currUser)
-                setLoading(false)
-            }catch(error){
-              // console.log(error.message)
-              setLoading(false)
-            }
-          }
-          user()
-      },[])
+    async function user() {
+      setLoading(true)
+      if(signingType === "login") return setLoading(false)
+      console.log(signingType)
+      try{
+          rotateAccessToken()
+          const newToken = localStorage.getItem("accessToken")
+          getAccessToken(newToken)
+          const currUser = await getUser(`user?token=${newToken}`)
+          // console.log({currUser})
+          getCurrentUser(currUser)
+          setLoading(false)
+      }catch(error){
+        console.log(error.message)
+        setLoading(false)
+      }
+    }
+    user()
+},[signingType])
 
   useEffect(()=>{
     async function rotateTokens(){
-      console.log("Token rotation started")
       const storedAcessToken = localStorage.getItem("accessToken")
       if(storedAcessToken){
-        rotateAccessToken(storedAcessToken) 
+        rotateAccessToken() 
         getAccessToken(storedAcessToken)
         return
       }
       const res = await refreshAccessToken()
       console.log({res})
       if(!res) return window.location.href = "/Auth/Signup"
-      getAccessToken(res)
+      const storedAccessToken = localStorage.getItem("accessToken")
+      getAccessToken(storedAccessToken)
     }
     clearInterval(timerId)
     timerId = setInterval(async () => {
+      console.log("Token rotation started")
       const res = await rotateTokens()
       if(res){
         const newAcessToken = localStorage.getItem("accessToken")

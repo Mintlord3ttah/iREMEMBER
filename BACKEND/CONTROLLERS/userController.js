@@ -27,28 +27,26 @@ export async function tokenRotation(req, res) {
 }
 export async function validateLogin(req, res) {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).send("Email and password are required.");
+    if (!email || !password) return res.status(400).json({error: "Email and password are required."});
 
     const getUser = User.findOne({ email });
-    if (!getUser) return res.status(404).send("User not found.");
+    if (!getUser) return res.status(404).json({error: "User not found."})
     // RETRIEVE PASSWORD
     const user = await getUser.select('+password').exec();
-    console.log(user.password, password)
+    // console.log(user.password, password)
     
-    if (user.password !== password) return res.status(401).send("Invalid password.");
-    if (!user.emailVerified) return res.status(403).send("Email not verified.");
-    // if (!user.isAuthenticated) return res.status(403).send("User not authenticated.");
+    if (user.password !== password) return res.status(401).json({error: "Invalid password."});
+    if (!user.emailVerified) return res.status(403).json({error: "Email not verified."});
     const { refreshToken, accessToken } = await generateUserTokens(user, res);
     user.refreshToken = refreshToken;
     user.accessToken = accessToken;
-    const LoggedIn = await user.save();
+    const LoggedInUser = await user.save();
+    console.log({oldtoken: user, accessToken})
     res.status(200).json({
         status: "success",
-        data: { user: LoggedIn }
+        data: { user: LoggedInUser, message: "Login successful" }
     });
 }
-
-
 export async function createUser(req, res, next){
     try{
         const api = new API(User, req)

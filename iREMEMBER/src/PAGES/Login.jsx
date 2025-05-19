@@ -1,13 +1,21 @@
+import { useNavigate } from "react-router-dom";
+import { useDataContext } from "../context/DataContext";
 import AuthForm from "../UI/AuthForm";
 import {handleFormSubmit as handleSubmit} from "../utils/handleFormSubmit"
 
-
 export default function Login() {
+  const {getSigningType, getCurrentUser} = useDataContext()
+  const navigate = useNavigate()
 
-  function handleLogin(e){
-    const res = handleSubmit(e,"user/login")
-    if(res) window.location.href = "/Auth/Processing"
-    else return
+  async function handleLogin(e){
+    e.preventDefault()
+    const res = await handleSubmit(e,"user/login")
+    if(res) {
+      localStorage.setItem("accessToken", res.user.accessToken)
+      getSigningType("login")
+      getCurrentUser(res.user)
+      navigate("/app")
+    } else return
   }
   return <div className="h-screen flex flex-col justify-center items-center px-4">
     <div className="flex flex-col gap-12">
@@ -17,7 +25,7 @@ export default function Login() {
               onsubmit={handleLogin} 
               redirectlabel={"Forgot Password"}
               redirectURL={"/Auth/Signup"} 
-              createAcc={"Create Accounnt"} />
+              createAcc={"Create Account"} />
     </div>
   </div>
 }

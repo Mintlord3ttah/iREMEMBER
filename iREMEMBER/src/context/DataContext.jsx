@@ -16,6 +16,7 @@ const initialState = {
     sessionId: "", // users id
     isSigningUpStatus: "",
     accessToken: "",
+    signingType: "",
 }
 
 function reducer(state, action){
@@ -80,6 +81,11 @@ function reducer(state, action){
                 ...state,
                accessToken: action.payload
             }
+        case "user/get-signing-type":
+            return {
+                ...state,
+               signingType: action.payload
+            }
         default:
             throw new Error("unknown action");
             
@@ -88,7 +94,7 @@ function reducer(state, action){
 
 export default function DataContextProvider({children}) {
     const [{isSelect, isFavourite, isEdit, isSigningUpStatus,
-           accessToken, itemToEdit, sessionId, currentUser, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
+           accessToken, itemToEdit, sessionId, currentUser, signingType, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
     function select(){
         dispatch({type: "item/select"})
     }
@@ -123,6 +129,9 @@ export default function DataContextProvider({children}) {
         // console.log({token})
         dispatch({type: "user/get-token", payload: token})
     }
+    function getSigningType(type){
+        dispatch({type: "user/get-signing-type", payload: type})
+    }
     const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
 // console.log({accessToken})
 
@@ -149,6 +158,8 @@ export default function DataContextProvider({children}) {
     getCurrentUser,
     accessToken,
     getAccessToken,
+    getSigningType,
+    signingType,
   }}>
     {children}
   </Context.Provider>
