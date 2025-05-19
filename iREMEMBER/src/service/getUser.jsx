@@ -1,5 +1,5 @@
 import toast from "react-hot-toast"
-const BACKEND_URL="http://localhost:3000/api/v1/users"
+const BACKEND_URL="https://irem-backend.onrender.com/api/v1/items"
 
 export async function getUser(filter) {
     if(!filter) return toast.error("No filter provided")

@@ -1,7 +1,7 @@
 import toast from "react-hot-toast"
 
-// const BACKEND_URL="https://irem-backend.onrender.com/api/v1/items"
-const BACKEND_URL="http://localhost:3000/api/v1/items"
+const BACKEND_URL="https://irem-backend.onrender.com/api/v1/items"
+// const BACKEND_URL="http://localhost:3000/api/v1/items"
 
 export async function getItems({accessToken, id}) {
     console.log(id)

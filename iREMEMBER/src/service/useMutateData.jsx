@@ -3,12 +3,10 @@ import postData from "./postData";
 import { useDataContext } from "../context/DataContext";
 import toast from "react-hot-toast";
 
-// const storedId = localStorage.getItem("id")
 
 export default function useMutateData({id="", method, url=""}){
   const {getAllItems, accessToken, currentUser} = useDataContext()
     const queryClient = useQueryClient()
-    // const user_id = storedId?.length > 5 ? storedId?.split("-").at(-2).split(".").join('') : ""
 
     const {mutate, status, isPending} = useMutation({
       mutationFn: async (data)=>{
