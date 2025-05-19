@@ -9,6 +9,12 @@ app.use(cors({
     origin: "https://iremember-eight.vercel.app", // Specify frontend origin
     credentials: true // Allow cookies and authentication headers
 }))
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://iremember-eight.vercel.app");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(express.json()) // to parse json data from the request body
 app.use(express.urlencoded({extended: true})) // to parse urlencoded data from the request body
 app.use(cookieParser()) // to parse cookies from the request headers
