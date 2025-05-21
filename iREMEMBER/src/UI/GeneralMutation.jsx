@@ -13,8 +13,8 @@ const endpoints = {
     "wipe-not-favourite": "exfavourite",
     "wipe-not-priority|favourite": "expriority,exfavourite"
 }
-const path = "http://localhost:3000/api/v1/items"
-// const path = "https://irem-backend.onrender.com/api/v1/items"
+// const path = "http://localhost:3000/api/v1/items"
+const path = "https://irem-backend.onrender.com/api/v1/items"
 
 const GeneralMutation = memo(function GeneralMutation() {
     const {isSelect, select} = useDataContext()

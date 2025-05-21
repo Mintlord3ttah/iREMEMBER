@@ -10,9 +10,6 @@ import Controllers from "../UI/Controllers";
 import FormControl from "../UI/FormControl";
 import { getUser, refreshAccessToken } from "../service/getUser";
 import ProcessUI from "../UI/ProcessUI";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-
 
 let timerId = null
 
@@ -21,7 +18,6 @@ export default function Application() {
   const [form, setForm] = useState(false)
   const [OverlayFormControls, setOverlayFormControls] = useState(false)
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
 
   function handleSelect(e){
     select()
@@ -48,7 +44,6 @@ export default function Application() {
   useEffect(()=>{
     async function user() {
       setLoading(true)
-      console.log({signingType})
       if(signingType === "login"){
        getSigningType("")
        setLoading(false)
@@ -57,9 +52,7 @@ export default function Application() {
           rotateAccessToken()
           const newToken = localStorage.getItem("accessToken")
           getAccessToken(newToken)
-          console.log({newToken})
           const currUser = await getUser(`user?token=${newToken}`)
-          console.log({currUser})
           getCurrentUser(currUser)
           setLoading(false)
       }catch(error){

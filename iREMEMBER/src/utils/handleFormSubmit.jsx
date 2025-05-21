@@ -1,6 +1,8 @@
 import toast from "react-hot-toast"
 
 const BACKEND_URL="https://irem-backend.onrender.com/api/v1/users"
+const FRONTEND_URL="https://iremember-eight.vercel.app/auth/processing"
+// const FRONTEND_URL="http://localhost:5173/auth/processing"
 // const BACKEND_URL="http://localhost:3000/api/v1/users"
 
 export async function handleFormSubmit(e, placeholder=""){
@@ -21,7 +23,7 @@ export async function handleFormSubmit(e, placeholder=""){
     if(!validEmail) return toast.error("Email is invalid")
     if(!validPassword) return toast.error("password must be at least 8 characters long, includes a number and a special character")
     
-    const user = {email, name: names, password, redirect: "https://iremember-eight.vercel.app/auth/processing"}
+    const user = {email, name: names, password, redirect: FRONTEND_URL}
     try{
       const response = await fetch(`${BACKEND_URL}/${placeholder}`, {
       method: "POST",
