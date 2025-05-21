@@ -6,7 +6,7 @@ import Packed from './Packed'
 import useMutateData from '../service/useMutateData'
 
 export default function EditItemForm() {
-  const {itemToEdit, isFavourite, setIsFavourite, resetIsFavourite, edit, itemStatus, getItemStatus} = useDataContext()
+  const {itemToEdit, isFavourite, setIsFavourite, resetIsFavourite, edit, getItemStatus} = useDataContext()
   const {mutate, isPending, status} = useMutateData({method: "PATCH", id: itemToEdit._id})
 
   function handleSubmit(e){

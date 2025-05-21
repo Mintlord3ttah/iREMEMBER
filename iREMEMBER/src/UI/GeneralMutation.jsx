@@ -17,7 +17,7 @@ const endpoints = {
 const path = "https://irem-backend.onrender.com/api/v1/items"
 
 const GeneralMutation = memo(function GeneralMutation() {
-    const {isSelect, select} = useDataContext()
+    const {isSelect, select, getItemStatus} = useDataContext()
     const [endpoint, setEndpoint] = useState("")
     const {mutate, status} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `${path}/db/${endpoints[endpoint]}`}) :
                      useMutateData({method: endpoint.includes("wipe") ? "DELETE" : "PATCH", url: `${path}/uniform/${endpoints[endpoint]}`})
