@@ -1,13 +1,13 @@
 import toast from "react-hot-toast";
 
 const BACKEND_URL="https://irem-backend.onrender.com/api/v1/items"
+// const BACKEND_URL="http://localhost:3000/api/v1/items"
 
 export default async function postData(id="", method, token, newData, path=""){
-  console.log({id, method, token, newData, path})
     if(!token) return
     try{const url = path.length ? path :
-                id.length ? `${BACKEND_URL}/${id}`:
-                            `${BACKEND_URL}/`    
+                id.length ? `${BACKEND_URL}/item?itemId=${id}`:
+                            `${BACKEND_URL}/`
 
     const response = await fetch(url, {
       method: method,

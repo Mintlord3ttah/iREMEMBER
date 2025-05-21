@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 let timerId = null
 
 export default function Application() {
-  const {select, isEdit, isSelect, getAccessToken, currentUser, signingType, getCurrentUser} = useDataContext()
+  const {select, isEdit, isSelect, getAccessToken, currentUser,getSigningType, signingType, getCurrentUser} = useDataContext()
   const [form, setForm] = useState(false)
   const [OverlayFormControls, setOverlayFormControls] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -38,7 +38,6 @@ export default function Application() {
     if (Date.now() >= exp * 1000){
       const res = await refreshAccessToken();
       if(res){
-        // console.log("Token refreshed")
         const newAcessToken = localStorage.getItem("accessToken")
         getAccessToken(newAcessToken)
         return
@@ -49,14 +48,18 @@ export default function Application() {
   useEffect(()=>{
     async function user() {
       setLoading(true)
-      if(signingType === "login") return setLoading(false)
-      console.log(signingType)
+      console.log({signingType})
+      if(signingType === "login"){
+       getSigningType("")
+       setLoading(false)
+      } 
       try{
           rotateAccessToken()
           const newToken = localStorage.getItem("accessToken")
           getAccessToken(newToken)
+          console.log({newToken})
           const currUser = await getUser(`user?token=${newToken}`)
-          // console.log({currUser})
+          console.log({currUser})
           getCurrentUser(currUser)
           setLoading(false)
       }catch(error){
@@ -76,7 +79,6 @@ export default function Application() {
         return
       }
       const res = await refreshAccessToken()
-      console.log({res})
       if(!res) return window.location.href = "/Auth/Signup"
       const storedAccessToken = localStorage.getItem("accessToken")
       getAccessToken(storedAccessToken)
@@ -90,9 +92,10 @@ export default function Application() {
         getAccessToken(newAcessToken)
         return
       }
-    },  15 * 60 * 1000); // Check every 5 minutes
+    },  60 * 1000); // Check every 1 minute
   },[timerId])
 
+  // console.log({currentUser})
   if(loading || !currentUser?._id) return <ProcessUI />
   return (
     <>

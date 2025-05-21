@@ -10,13 +10,11 @@ export default function ItemsBoard() {
       const {currentUser} = useDataContext()
   
   const accessToken = localStorage.getItem("accessToken")
-  console.log({currentUser})
     const {data: items, isLoading, refetch} = useQuery({
         queryKey: ["items"],
-        queryFn: () => getItems({accessToken, id: currentUser?._id}),
+        queryFn: () =>accessToken && getItems({accessToken, id: currentUser?._id}),
     })
 
-  // if(isSigningUpStatus) return <GenLoader />
   return <>
   {isLoading ? <GenLoader /> : !isLoading && !items ?
     <div className='flex flex-col w-full h-full gap-6 justify-center items-center'>
@@ -28,6 +26,7 @@ export default function ItemsBoard() {
     !isLoading && items?.length <= 0 ? <DivCenter sizeFull='size-full'>🚀 Welcome <span className='font-bold'>{currentUser?.name?.split(" ")[0]}</span>, Add Items To Get Started! 🚀</DivCenter> :
     <ul className="grid grid-cols-3 max-[400px]:grid-cols-2 gap-y-1 max-[400px]:gap-y-4 max-[780px]:px-12 max-[715px]:px-4">
         {items?.map(v=> <Item key={v.item} item={v}/>)}
+        {isLoading && <GenLoader w='w-fit pl-4' />}
     </ul>}
   </>
 }

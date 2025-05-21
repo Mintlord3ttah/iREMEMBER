@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const itemSchema = mongoose.Schema({
     item: {
         type: String,
-        unique: [true, "Item already exist"],
+        // unique: [true, "Item already exist"],
         required: [true, "Item name cannot be empty"]
     },
     packed: {
@@ -40,5 +40,7 @@ const itemSchema = mongoose.Schema({
         select: false
     }
 })
+
+itemSchema.index({ createdById: 1, item: 1 }, { unique: true })
 
 export const Item = mongoose.model("items", itemSchema)

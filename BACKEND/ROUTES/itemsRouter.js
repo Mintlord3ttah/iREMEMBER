@@ -5,13 +5,13 @@ import { authenticateToken, createItem, deleteAllItems, deleteItem, deleteItems,
 // ITEM ROUTE HANDLERS
 const item_router = express.Router()
 
-item_router.use(authenticateToken)
+// item_router.use(authenticateToken)
 
 item_router.route("/")
 .get(getAllItems)
 .post(createItem)
 
-item_router.route("/:id")
+item_router.route("/item")
 .get(getItem)
 .patch(updateItem)
 .delete(deleteItem)

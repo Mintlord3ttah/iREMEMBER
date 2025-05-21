@@ -5,12 +5,11 @@ import toast from "react-hot-toast";
 
 
 export default function useMutateData({id="", method, url=""}){
-  const {getAllItems, accessToken, currentUser} = useDataContext()
+  const {getAllItems, accessToken} = useDataContext()
     const queryClient = useQueryClient()
 
     const {mutate, status, isPending} = useMutation({
       mutationFn: async (data)=>{
-        console.log({data})
         return await postData(id, method, accessToken, data, url)
       },
         onSuccess: (data) => {

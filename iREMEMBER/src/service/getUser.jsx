@@ -1,6 +1,6 @@
 import toast from "react-hot-toast"
-const BACKEND_URL="https://irem-backend.onrender.com/api/v1/items"
-// const BACKEND_URL="http://localhost:3000/api/v1/items"
+const BACKEND_URL="https://irem-backend.onrender.com/api/v1/users"
+// const BACKEND_URL="http://localhost:3000/api/v1/users"
 
 
 export async function getUser(filter) {
@@ -26,7 +26,7 @@ export async function refreshAccessToken() {
         });
         if (!response.ok) throw new Error("Failed to refresh");
         const data = await response.json();
-        console.log(data)
+        console.log({data})
         localStorage.setItem("accessToken", data.accessToken);
         // localStorage.setItem("joker", data.accessToken);
 

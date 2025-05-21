@@ -1,6 +1,7 @@
 import toast from "react-hot-toast"
 
 const BACKEND_URL="https://irem-backend.onrender.com/api/v1/users"
+// const BACKEND_URL="http://localhost:3000/api/v1/users"
 
 export async function handleFormSubmit(e, placeholder=""){
   // console.log({placeholder})
@@ -15,11 +16,12 @@ export async function handleFormSubmit(e, placeholder=""){
     const validPassword = passwordRegEx.test(password)
     const validEmail = emailRegEx.test(email) && email.includes(".com")
 
-    if(names?.length <= 2 || !placeholder) return toast.error("name legnth is too short")
+    console.log({name: names, length: names?.length, if: !placeholder, placeholder})
+    if(names?.length < 3 || placeholder) return toast.error("name length is too short")
     if(!validEmail) return toast.error("Email is invalid")
     if(!validPassword) return toast.error("password must be at least 8 characters long, includes a number and a special character")
     
-    const user = {email, name: names, password, redirect: "http://localhost:5173/auth/processing"}
+    const user = {email, name: names, password, redirect: "https://iremember-eight.vercel.app/auth/processing"}
     try{
       const response = await fetch(`${BACKEND_URL}/${placeholder}`, {
       method: "POST",
@@ -31,14 +33,16 @@ export async function handleFormSubmit(e, placeholder=""){
     
     const data = await response.json()
     const message = data.data?.message
-    const error = data?.error
-    if(error) throw new Error(error)
+    const status = data?.status
+    if(status === "fail") throw new Error(data?.message)  
     toast.success(message)
-    // console.log(data)
+    console.log(data)
     e.target.reset()
     return data?.data
     }catch(error){
       console.log(error.message)
+      if(error.message.includes("buffering timed out")) return toast.error("Server is busy, please try again later")
+      if(error.message.includes("NetworkError")) return toast.error("Network Error, please check your connection")
       toast.error(error.message)
     }
   }

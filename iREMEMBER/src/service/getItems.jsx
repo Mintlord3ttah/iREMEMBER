@@ -4,7 +4,6 @@ const BACKEND_URL="https://irem-backend.onrender.com/api/v1/items"
 // const BACKEND_URL="http://localhost:3000/api/v1/items"
 
 export async function getItems({accessToken, id}) {
-    console.log(id)
     if(!accessToken) return toast.error("Please login to continue")
    try{ 
     const res = await fetch(BACKEND_URL + `?userId=${id}`, {

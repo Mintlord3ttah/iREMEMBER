@@ -5,7 +5,7 @@ import { getUser } from '../service/getUser'
 import { useDataContext } from '../context/DataContext'
 import {handleFormSubmit as handleSubmit} from "../utils/handleFormSubmit"
 
-export default async function Signup() {
+export default function Signup() {
   const {getSigningType} = useDataContext()
 
 function onSubmitHandler(e){

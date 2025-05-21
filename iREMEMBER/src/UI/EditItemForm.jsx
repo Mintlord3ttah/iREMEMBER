@@ -2,40 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Priority from './Priority'
 import Favourite from './Favourite'
 import { useDataContext } from '../context/DataContext'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Packed from './Packed'
+import useMutateData from '../service/useMutateData'
 
 export default function EditItemForm() {
-  const {itemToEdit, isFavourite, setIsFavourite, resetIsFavourite, edit} = useDataContext()
-  const queryClient = useQueryClient();
-
-
-  const mutation = useMutation({
-    mutationFn: postData,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["items"])
-      console.log("Server response:", data);
-    },
-    onError: (error) => {
-      console.error("Error:", error);
-    }
-  })
-
-  async function postData(newData){
-    const response = await fetch(`http://localhost:3000/api/v1/items/${itemToEdit._id}`, {
-      method: "PATCH",
-      body: newData,
-      headers: {
-        'Content-Type': 'application/json'
-      }    
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-  
-    return response.json();
-  }
+  const {itemToEdit, isFavourite, setIsFavourite, resetIsFavourite, edit, currentUser} = useDataContext()
+  const {mutate} = useMutateData({method: "PATCH", id: itemToEdit._id})
 
   function handleSubmit(e){
     e.preventDefault()
@@ -46,11 +18,11 @@ export default function EditItemForm() {
     const count = formData.get("count") || 1
     const packed = formData.get("pack") === "on" ? true : false
     const priority = formData.get("priority").includes("priority:") ? "normal" : formData.get("priority") 
-    const obj = JSON.stringify({item, purpose, count, packed, priority, createdById: 1, favourite: isFavourite})
+    const obj = JSON.stringify({item, purpose, count, packed, priority, favourite: isFavourite})
 
-    mutation.mutate(obj)
+    mutate(obj)
     resetIsFavourite()
-    e.target.reset = true
+    e.target.reset()
     edit()
   }
 

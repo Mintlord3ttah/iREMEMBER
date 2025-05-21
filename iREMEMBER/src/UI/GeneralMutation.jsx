@@ -8,11 +8,13 @@ const endpoints = {
     "favourite-all": "favourite",
     "unfavourite-all": "-favourite",
     "delete-all": "wipe",
+    "wipe-not-priority": "expacked",
     "wipe-not-priority": "expriority",
     "wipe-not-favourite": "exfavourite",
     "wipe-not-priority|favourite": "expriority,exfavourite"
 }
 const path = "http://localhost:3000/api/v1/items"
+// const path = "https://irem-backend.onrender.com/api/v1/items"
 
 const GeneralMutation = memo(function GeneralMutation() {
     const {isSelect, select} = useDataContext()
@@ -21,6 +23,7 @@ const GeneralMutation = memo(function GeneralMutation() {
                      useMutateData({method: endpoint.includes("wipe") ? "DELETE" : "PATCH", url: `${path}/uniform/${endpoints[endpoint]}`})
 
     function handleClick(e){
+        if(e.target.value === "Gen.Mutation") return
         setEndpoint(e.target.value)
         if(isSelect) select()
     }
@@ -34,9 +37,10 @@ const GeneralMutation = memo(function GeneralMutation() {
         <option value="favourite-all" >Favourite all</option>
         <option value="unfavourite-all" >Unfavourite all </option>
         <option value="delete-all" >Delete all</option>
-        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`}  value="wipe-not-priority">Delete all not priority (p)</option>
-        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`} value="wipe-not-favourite">Delete all not favourite (f)</option>
-        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`} value="wipe-not-priority|favourite">Delete all not (p) and (f)</option>
+        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`}  value="wipe-not-packed">Delete all not packed (pa)</option>
+        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`}  value="wipe-not-priority">Delete all not priority (pr)</option>
+        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`} value="wipe-not-favourite">Delete all not favourite (fa)</option>
+        <option disabled={isSelect} className={`${isSelect ? "text-gray-400" : ""}`} value="wipe-not-priority|favourite">Delete all not (pr) and (fa)</option>
     </select>
 })
 

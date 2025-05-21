@@ -7,28 +7,27 @@ import Packed from "./Packed";
 import { FiEdit } from "react-icons/fi";
 import Checkbox from "./Checkbox";
 import useMutateData from "../service/useMutateData";
+import GenLoader from "./GenLoader";
 
 export default function Item({item}) {
-  console.log(item)
-  const {isSelect, isEdit, edit} = useDataContext()
+  const {isSelect, edit} = useDataContext()
   const [pickItem, setPickItem] = useState(false)
   const {mutate, status} = useMutateData({id: item._id, method: "PATCH"})
   const packed = item?.packed
   const priorityFlags = {
-    high: "text-orange-500", 
-    "mid-high": "text-orange-400", 
+    high: "text-orange-700", 
+    "mid-high": "text-orange-500", 
     normal: "text-orange-300", 
     "mid-low": "text-orange-200", 
-    low: "text-orange-50"}
+    low: "text-orange-100"}
 
     function handleClick(e){
-      console.log(e.target)
       const contains = e.target?.classList?.contains("item") || e.target.closest(".edit").classList.contains("edit")
-      console.log(contains)
       if(contains) edit(item)
     }
 
   if(!item) return
+  // if(isLoading) return <GenLoader />
   return (
     <div className="tooltip w-fit">
         <li onClick={handleClick} className="item relative hover:bg-amber-400 bg px-4 w-fit cursor-pointer flex items-center gap-3 rounded-2xl">

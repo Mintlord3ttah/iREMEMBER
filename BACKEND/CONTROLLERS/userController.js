@@ -13,6 +13,7 @@ let redirect;
 
 export async function tokenRotation(req, res) {
     const refreshToken = req.cookies.refreshToken
+    console.log({refreshToken})
     if (!refreshToken) return res.status(401).send("No refresh token provided.");
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
@@ -46,16 +47,15 @@ export async function validateLogin(req, res) {
     });
 }
 export async function createUser(req, res, next){
+    // const ADMIN_DEV = process.env.ADMIN_DEV_PASSKEY
+    // const ADMIN_EMAIL = process.env.ADMIN_DEV_EMAIL
+    // if(req.body.email === ADMIN_EMAIL && req.body.password === ADMIN_DEV) {
+    //     await User.findOneAndDelete({ email: req.body.email });
+    // } 
     try{
         const api = new API(User, req)
         api.create()
         const user = await api.query
-        // console.log()
-        // const user = await User.create(req.body)
-        // res.status(201).json({
-        //     status: "success",
-        //     data: {user}
-        // })
     }catch(err){
          return res.status(400).json({
             status: "fail",
@@ -87,7 +87,7 @@ export async function sendVerificationEmail(req, res, next){
         req.body.token = token
 
     }catch(err){
-        console.log(err.meassage)
+        // console.log(err.meassage)
        return res.status(400).json({
             status: "fail",
             message: err.message
@@ -111,21 +111,23 @@ export async function storeEmailToken(req, res, next){
     }
     next()
 }
-
 export async function verifyEmail(req, res, next){  
     const token = req.query.token  
 
     try{
         if(!token) throw new Error("Invalid token")
-        const user = await User.findOne({ emailToken: token }); 
-        if(!user) throw new Error("No user found for this token")
-        const {refreshToken, accessToken} = await generateUserTokens(user, res)
-    
+        const getUser = User.findOne({ emailToken: token }); 
+        if(!getUser) throw new Error("No user found for this token")
+        const {refreshToken, accessToken} = await generateUserTokens(getUser, res)
+        const user = await getUser.select('+password').exec();
+        // console.log({password: user.password})
+
         user.emailToken = ""
         user.emailVerified = true
         user.isAuthenticated = true
         user.accessToken = accessToken
         user.refreshToken = refreshToken
+        user.isAdmin = user.email === process.env.ADMIN_DEV_EMAIL && user.password === process.env.ADMIN_DEV_PASSKEY ? true : false
         await user.save()
         res.status(200).redirect(redirect)
     }catch(err){
