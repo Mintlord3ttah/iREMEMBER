@@ -10,7 +10,7 @@ export default function WelcomeUI() {
     const navigate = useNavigate()
 
     function handleClick(){
-        if(!verify) return navigate("/Auth/Login")
+        if(!verify) return navigate("/auth/login")
         navigate("/app")
     }
 
