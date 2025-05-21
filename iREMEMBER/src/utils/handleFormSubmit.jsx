@@ -17,7 +17,7 @@ export async function handleFormSubmit(e, placeholder=""){
     const validEmail = emailRegEx.test(email) && email.includes(".com")
 
     console.log({name: names, length: names?.length, if: !placeholder, placeholder})
-    if(names?.length < 3 || placeholder) return toast.error("name length is too short")
+    if(names?.length < 3 && placeholder) return toast.error("name length is too short")
     if(!validEmail) return toast.error("Email is invalid")
     if(!validPassword) return toast.error("password must be at least 8 characters long, includes a number and a special character")
     
