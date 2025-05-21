@@ -19,7 +19,7 @@ const path = "https://irem-backend.onrender.com/api/v1/items"
 const GeneralMutation = memo(function GeneralMutation() {
     const {isSelect, select} = useDataContext()
     const [endpoint, setEndpoint] = useState("")
-    const {mutate} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `${path}/db/${endpoints[endpoint]}`}) :
+    const {mutate, status} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `${path}/db/${endpoints[endpoint]}`}) :
                      useMutateData({method: endpoint.includes("wipe") ? "DELETE" : "PATCH", url: `${path}/uniform/${endpoints[endpoint]}`})
 
     function handleClick(e){
@@ -29,6 +29,7 @@ const GeneralMutation = memo(function GeneralMutation() {
     }
 
     useEffect(()=>{endpoint.length && mutate(JSON.stringify({select: "null"}))},[endpoint]) // fake data to occupy the vaccum
+    useEffect(()=>getItemStatus(status),[status])
 
     return <select onChange={handleClick} defaultValue={"Gen.Mutation"} name="mutation" className="w-fit bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
         <option className="font-bold" value={"Gen.Mutation"}>Gen.Mutation</option>

@@ -17,6 +17,7 @@ const initialState = {
     isSigningUpStatus: "",
     accessToken: "",
     signingType: "",
+    itemStatus: ""
 }
 
 function reducer(state, action){
@@ -86,6 +87,11 @@ function reducer(state, action){
                 ...state,
                signingType: action.payload
             }
+        case "item/status":
+            return {
+                ...state,
+               itemStatus: action.payload
+            }
         default:
             throw new Error("unknown action");
             
@@ -94,7 +100,7 @@ function reducer(state, action){
 
 export default function DataContextProvider({children}) {
     const [{isSelect, isFavourite, isEdit, isSigningUpStatus,
-           accessToken, itemToEdit, sessionId, currentUser, signingType, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
+           accessToken, itemToEdit, sessionId, currentUser, itemStatus, signingType, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
     function select(){
         dispatch({type: "item/select"})
     }
@@ -109,7 +115,6 @@ export default function DataContextProvider({children}) {
         dispatch({type: "item/edit", payload: item})
     }
     function getSortStr(str){
-        // console.log(str)
         dispatch({type: "sort/sort-str", payload: str})
     }
     function getSortOrder(str){
@@ -122,18 +127,18 @@ export default function DataContextProvider({children}) {
         dispatch({type: "user/fetch", payload: id})
     }
     function getCurrentUser(currentUser){
-        // console.log({currentUser})
         dispatch({type: "user/currentUser", payload: currentUser})
     }
     function getAccessToken(token){
-        // console.log({token})
         dispatch({type: "user/get-token", payload: token})
     }
     function getSigningType(type){
         dispatch({type: "user/get-signing-type", payload: type})
     }
+    function getItemStatus(status){
+        dispatch({type: "item/status", payload: status})
+    }
     const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
-// console.log({accessToken})
 
   return <Context.Provider value={{
     select,
@@ -159,6 +164,8 @@ export default function DataContextProvider({children}) {
     accessToken,
     getAccessToken,
     getSigningType,
+    getItemStatus,
+    itemStatus,
     signingType,
   }}>
     {children}

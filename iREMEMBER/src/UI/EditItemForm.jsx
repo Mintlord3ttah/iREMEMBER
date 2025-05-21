@@ -6,8 +6,8 @@ import Packed from './Packed'
 import useMutateData from '../service/useMutateData'
 
 export default function EditItemForm() {
-  const {itemToEdit, isFavourite, setIsFavourite, resetIsFavourite, edit, currentUser} = useDataContext()
-  const {mutate} = useMutateData({method: "PATCH", id: itemToEdit._id})
+  const {itemToEdit, isFavourite, setIsFavourite, resetIsFavourite, edit, itemStatus, getItemStatus} = useDataContext()
+  const {mutate, isPending, status} = useMutateData({method: "PATCH", id: itemToEdit._id})
 
   function handleSubmit(e){
     e.preventDefault()
@@ -27,6 +27,7 @@ export default function EditItemForm() {
   }
 
   useEffect(()=>setIsFavourite(itemToEdit.favourite ? "1" : "0"),[])
+  useEffect(()=>getItemStatus(status),[status])
 
   return <form onSubmit={handleSubmit} className='shadow-md-cstm w-[30rem] h-60 rounded-2xl bg-amber-400 flex flex-col gap-6 py-4'>
     <Input defaultValue={itemToEdit.item} label={"Item"} fontSize={"text-2xl"} />

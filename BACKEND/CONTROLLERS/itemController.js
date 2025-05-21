@@ -56,11 +56,9 @@ export async function getAllItems(req, res, next) {
     const sortOrder = req.query.sortOrder || "asc"
 
     const checkUser = await User.findById(userId)
-    console.log({checkUser, isAdmin: checkUser.isAdmin})
     try{
         const items = checkUser.isAdmin ? await Item.find() : sortField ? await Item.find({createdById: userId}).sort([[ sortField, sortOrder ]]) : await Item.find({createdById: userId})
 
-        console.log({items})
         res.status(200).json({
         status: "success",
         count: items.length,
@@ -75,7 +73,6 @@ export async function getAllItems(req, res, next) {
 }
 
 export async function getItem(req, res, next){
-    //http://localhost:3000/api/v1/items/item?userId=1&itemId=1
     const {userId, itemId} = req.query
     try{
         const item = await Item.findById(itemId)
@@ -100,7 +97,7 @@ export async function updateItem(req, res, next){
         const updatedItem = await Item.updateOne({_id: itemId},{$set:  req.body}, {new: true, runValidators: true})
         const items = await Item.find({_id: "6828658d06d76808b41218c2"})
             console.log({items, updatedItem})
-        res.status(200)
+        res.status(200).json({status: "succes", data: {updatedItem}})
     }catch(err){
         res.status(400).json({
             status: "fail",
