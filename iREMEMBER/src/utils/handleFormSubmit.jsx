@@ -6,7 +6,6 @@ const FRONTEND_URL="https://iremember-eight.vercel.app/auth/processing"
 // const BACKEND_URL="http://localhost:3000/api/v1/users"
 
 export async function handleFormSubmit(e, placeholder=""){
-  // console.log({placeholder})
   e.preventDefault()
     const formData = new FormData(e.target)
     const names = formData.get("names")
@@ -18,7 +17,6 @@ export async function handleFormSubmit(e, placeholder=""){
     const validPassword = passwordRegEx.test(password)
     const validEmail = emailRegEx.test(email) && email.includes(".com")
 
-    console.log({name: names, length: names?.length, if: !placeholder, placeholder})
     if(names?.length < 3 && placeholder) return toast.error("name length is too short")
     if(!validEmail) return toast.error("Email is invalid")
     if(!validPassword) return toast.error("password must be at least 8 characters long, includes a number and a special character")
@@ -38,11 +36,9 @@ export async function handleFormSubmit(e, placeholder=""){
     const status = data?.status
     if(status === "fail") throw new Error(data?.message)  
     toast.success(message)
-    console.log(data)
     e.target.reset()
     return data?.data
     }catch(error){
-      console.log(error.message)
       if(error.message.includes("buffering timed out")) return toast.error("Server is busy, please try again later")
       if(error.message.includes("NetworkError")) return toast.error("Network Error, please check your connection")
       toast.error(error.message)
