@@ -18,7 +18,7 @@ import Processing from './PAGES/Processing'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000
+      staleTime: 0
     }
   }
 })

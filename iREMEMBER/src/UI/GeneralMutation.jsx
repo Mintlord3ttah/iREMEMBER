@@ -1,6 +1,7 @@
 import { memo, useEffect, useState } from "react"
 import useMutateData from "../service/useMutateData"
 import { useDataContext } from "../context/DataContext"
+import { BACKEND_URL } from "../utils/backendSite"
 
 const endpoints = {
     "pack-all": "packed",
@@ -8,19 +9,16 @@ const endpoints = {
     "favourite-all": "favourite",
     "unfavourite-all": "-favourite",
     "delete-all": "wipe",
-    "wipe-not-priority": "expacked",
+    "wipe-not-packed": "expacked",
     "wipe-not-priority": "expriority",
     "wipe-not-favourite": "exfavourite",
     "wipe-not-priority|favourite": "expriority,exfavourite"
 }
-// const path = "http://localhost:3000/api/v1/items"
-const path = "https://irem-backend.onrender.com/api/v1/items"
-
 const GeneralMutation = memo(function GeneralMutation() {
     const {isSelect, select, getItemStatus} = useDataContext()
     const [endpoint, setEndpoint] = useState("")
-    const {mutate, status} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `${path}/db/${endpoints[endpoint]}`}) :
-                     useMutateData({method: endpoint.includes("wipe") ? "DELETE" : "PATCH", url: `${path}/uniform/${endpoints[endpoint]}`})
+    const {mutate, status} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `${BACKEND_URL}/items/db/${endpoints[endpoint]}`}) :
+                     useMutateData({method: endpoint.includes("wipe") ? "DELETE" : "PATCH", url: `${BACKEND_URL}/items/uniform/${endpoints[endpoint]}`})
 
     function handleClick(e){
         if(e.target.value === "Gen.Mutation") return

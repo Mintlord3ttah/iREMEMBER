@@ -41,6 +41,6 @@ const itemSchema = mongoose.Schema({
     }
 })
 
-itemSchema.index({ createdById: 1, item: 1 }, { unique: true })
+itemSchema.index({ createdById: 1, item: 1 }, { unique: [true, "Item name cannot be empty"] })
 
 export const Item = mongoose.model("items", itemSchema)

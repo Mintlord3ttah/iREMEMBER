@@ -1,10 +1,12 @@
-import toast from "react-hot-toast"
 import { BACKEND_URL } from "../utils/backendSite"
 
-export async function getItems({accessToken, id}) {
+export async function sortItems({sortObj, id}){
+    console.log({sortObj})
+    const accessToken = localStorage.getItem("accessToken")
     if(!accessToken) return toast.error("Please login to continue")
+    if(!sortObj.sortField) return toast.error("Invalid sort parameters")
    try{ 
-    const res = await fetch(BACKEND_URL + `/items?userId=${id}`, {
+    const res = await fetch(`${BACKEND_URL}/items/sort?userId=${id}&sortField=${sortObj.sortField}&sortOrder=${sortObj.sortOrder}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -13,8 +15,8 @@ export async function getItems({accessToken, id}) {
         credentials: "include"
     })
     const data = await res.json()
-    if(data.message) throw new Error("Connection Error")
-    return data.data?.items
+    console.log(data)
+    return data.data.items
 }catch(error){
     console.log(error.message)
     toast.error(error.message)

@@ -1,19 +1,15 @@
 import { useDataContext } from '../context/DataContext'
 
-export default function SortOrder() {
+export default function SortOrder({setOrder, order}) {
     
-
   return<label htmlFor="order" className='flex gap-2'>
             <p>Asc</p>
-            <RadioBtn label={"asc"} />
+            <RadioBtn setOrder={setOrder} order={order} label={"asc"} />
             <p>Desc</p>
-            <RadioBtn label={"desc"} />
+            <RadioBtn setOrder={setOrder} order={order} label={"desc"} checked={true} />
         </label>
 }
 
-
-function RadioBtn({label}){
-    const {getSortOrder, sortOrder} = useDataContext()
-
-    return <input onClick={()=>getSortOrder(label)} type="radio" defaultChecked={label === sortOrder} name="order" id={label} />
+function RadioBtn({label, order, setOrder, checked}){
+    return <input onClick={()=>setOrder(label)} type="radio" defaultChecked={label === order || checked} name="order" id={label} />
 }

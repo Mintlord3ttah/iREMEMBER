@@ -1,13 +1,11 @@
 import toast from "react-hot-toast";
-
-const BACKEND_URL="https://irem-backend.onrender.com/api/v1/items"
-// const BACKEND_URL="http://localhost:3000/api/v1/items"
+import { BACKEND_URL } from "../utils/backendSite";
 
 export default async function postData(id="", method, token, newData, path=""){
     if(!token) return
     try{const url = path.length ? path :
-                id.length ? `${BACKEND_URL}/item?itemId=${id}`:
-                            `${BACKEND_URL}/`
+                id.length ? `${BACKEND_URL}/items/item?itemId=${id}`:
+                            `${BACKEND_URL}/items`
 
     const response = await fetch(url, {
       method: method,
@@ -17,9 +15,11 @@ export default async function postData(id="", method, token, newData, path=""){
         Authorization: `Bearer ${token}`
       }    
     })
-    if(!response.ok) throw new Error("Something went wrong")
+    if(!response.ok){
+      const error = await response.json()
+      throw new Error(error.message)
+    } 
     if(method === "DELETE" && response.status === 204) return "SUCCESS"
-    // console.log({response: await response.json()})
     return response.json();
 }catch(error){
     console.error(error.message)

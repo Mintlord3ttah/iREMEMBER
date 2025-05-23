@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "./config.env" });
 
-
 export function parsBody(req, res, next){
     JSON.parse(req.body)
 
@@ -33,8 +32,6 @@ export async function createItem(req, res, next){
         const api = new API(Item, req)
         api.create()
         const item = await api.query
-        // console.log()
-        // const item = await Item.create(req.body)
         res.status(201).json({
             status: "success",
             data: {item}
@@ -42,7 +39,7 @@ export async function createItem(req, res, next){
     }catch(err){
         res.status(400).json({
             status: "fail",
-            message: err.message
+            message: err.code === 11000 ? "Item already exists" : err.message
         })
     }
 
@@ -51,9 +48,12 @@ export async function createItem(req, res, next){
 
 export async function getAllItems(req, res, next) {
     const userId = req.query.userId
-    if(!userId) return res.status(400).json({status: "fail", message: "No userId provided"})
-    const sortField = req.query.sortField || "createdAt"
+        console.log({query: req.query})
+
+    if(!userId) return res.status(400).json({status: "fail", message: "No user associated with this request"})
+    const sortField = req.query.sortField || ""
     const sortOrder = req.query.sortOrder || "asc"
+    console.log(sortField)
 
     const checkUser = await User.findById(userId)
     try{
@@ -70,6 +70,25 @@ export async function getAllItems(req, res, next) {
         })
     }
     next()
+}
+export async function sortItems(req, res, next) {
+    const {userId, sortField, sortOrder} = req.query
+
+    if(!userId && !sortField) return res.status(400).json({status: "fail", message: "No user, sortField is associated with this request"})
+
+    try{
+        const items = await Item.find({createdById: userId}).sort([[ sortField, sortOrder ]])
+
+        res.status(200).json({
+        status: "success",
+        count: items.length,
+        data: {items}
+    })}catch(err){
+        res.status(404).json({
+            status: "fail",
+            message: err.message
+        })
+    }
 }
 
 export async function getItem(req, res, next){
@@ -140,7 +159,7 @@ export async function updateItems(req, res, next){
             
             res.status(200).json({
             status: "success",
-            // data: {updatedItems}
+            data: {updatedItems}
             })
         }catch(err){
             res.status(400).json({

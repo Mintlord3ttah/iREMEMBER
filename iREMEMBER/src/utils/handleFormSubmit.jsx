@@ -1,9 +1,9 @@
 import toast from "react-hot-toast"
 
-const BACKEND_URL="https://irem-backend.onrender.com/api/v1/users"
-const FRONTEND_URL="https://iremember-eight.vercel.app/auth/processing"
-// const FRONTEND_URL="http://localhost:5173/auth/processing"
-// const BACKEND_URL="http://localhost:3000/api/v1/users"
+// const BACKEND_URL="https://irem-backend.onrender.com/api/v1/users"
+// const FRONTEND_URL="https://iremember-eight.vercel.app/auth/processing"
+const FRONTEND_URL="http://localhost:5173/auth/processing"
+const BACKEND_URL="http://localhost:3000/api/v1/users"
 
 export async function handleFormSubmit(e, placeholder=""){
   e.preventDefault()

@@ -9,7 +9,7 @@ export default function AddItemForm({setForm, setOverlayFormControls}) {
   const {mutate, status} = useMutateData({method: "POST", id: ""})  
   const itemRef = useRef(null)
   
-  async function handleSubmit(e){
+function handleSubmit(e){
     e.preventDefault()
 
     const formData = new FormData(e.target)
@@ -26,8 +26,7 @@ export default function AddItemForm({setForm, setOverlayFormControls}) {
               [...new Set(items)]
               .map(item => ({item, ...deps})) :
               {item, ...deps}
-    // console.log(obj)
-    await mutate(JSON.stringify(obj))
+    mutate(JSON.stringify(obj))
     resetIsFavourite()
     setForm(false)
     setOverlayFormControls(false)
@@ -58,7 +57,7 @@ useEffect(()=>itemRef.current.focus(),[])
   <Priority width={"w-full"} />
   <div className="flex w-full justify-between items-center">
   <label htmlFor="pack" className="flex gap-3">
-    <input type="checkbox" id="pack" name="pack"/>
+    <input type="checkbox" name="pack"/>
     <span className="text-sm">Mark as packed</span>
   </label>
   <input type="submit" value="Save" className="w-fit bg-amber-500 rounded-2xl p-2 cursor-pointer hover:bg-amber-600"/>

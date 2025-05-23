@@ -44,7 +44,6 @@ function reducer(state, action){
                 isFavourite: false
             }
         case "sort/sort-str":
-            // console.log(action.payload)
             return {
                 ...state,
                 sortStr: {sortField: action.payload, sortOrder: state.sortOrder}//state.sortOrder === "desc" ? "-" + action.payload : action.payload,
@@ -115,6 +114,7 @@ export default function DataContextProvider({children}) {
         dispatch({type: "item/edit", payload: item})
     }
     function getSortStr(str){
+        // console.log({str})
         dispatch({type: "sort/sort-str", payload: str})
     }
     function getSortOrder(str){
@@ -138,8 +138,8 @@ export default function DataContextProvider({children}) {
     function getItemStatus(status){
         dispatch({type: "item/status", payload: status})
     }
-    const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
-
+    // const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
+    console.log(sortStr)
   return <Context.Provider value={{
     select,
     isSelect,
@@ -150,7 +150,7 @@ export default function DataContextProvider({children}) {
     edit,
     getSortStr,
     getSortOrder,
-    memoizedSortStr,
+    // memoizedSortStr,
     itemToEdit,
     sortOrder,
     getAllItems,
@@ -167,6 +167,7 @@ export default function DataContextProvider({children}) {
     getItemStatus,
     itemStatus,
     signingType,
+    sortStr,
   }}>
     {children}
   </Context.Provider>

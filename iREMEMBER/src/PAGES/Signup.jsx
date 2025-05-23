@@ -1,7 +1,4 @@
-import React from 'react'
 import AuthForm from '../UI/AuthForm'
-import toast from 'react-hot-toast'
-import { getUser } from '../service/getUser'
 import { useDataContext } from '../context/DataContext'
 import {handleFormSubmit as handleSubmit} from "../utils/handleFormSubmit"
 

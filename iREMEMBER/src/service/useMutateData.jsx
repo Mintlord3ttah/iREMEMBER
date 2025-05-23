@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postData from "./postData";
 import { useDataContext } from "../context/DataContext";
-import toast from "react-hot-toast";
-
 
 export default function useMutateData({id="", method, url=""}){
   const {getAllItems, accessToken} = useDataContext()
@@ -13,17 +11,20 @@ export default function useMutateData({id="", method, url=""}){
         return await postData(id, method, accessToken, data, url)
       },
         onSuccess: (data) => {
-          if(!data) return toast.error("Conection Error")
+          if(!data) return // toast.error("Conection Error")
             queryClient.invalidateQueries(["items"])
-            console.log(data)
-            getAllItems(data?.data.items)
-            
+            queryClient.setQueryData(["items"], (oldData) => {
+              const newData = data.data.items
+              // const oldItems = oldData?.data.items
+              getAllItems(newData)
+            })
             console.log(data);
           },
+          
           onError: (error) => {
             console.error("Error:", error);
           }    
         })
-    
+
     return {mutate, status, isPending}
 }
