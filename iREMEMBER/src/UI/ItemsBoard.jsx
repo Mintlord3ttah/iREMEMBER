@@ -5,9 +5,11 @@ import { getItems } from '../service/getItems'
 import GenLoader from './GenLoader'
 import DivCenter from './DivCenter'
 import { useDataContext } from '../context/DataContext';
+import { useState } from 'react';
 
 export default function ItemsBoard() {
       const {currentUser, displayType} = useDataContext()
+      const [view, setView] = useState("")
   
   const accessToken = localStorage.getItem("accessToken")
     const {data: items, isLoading, refetch} = useQuery({
@@ -32,7 +34,7 @@ export default function ItemsBoard() {
     </ul> :
     <div className='bg-amber-500 border-amber-400 border-2 rounded-2xl p-4 max-[500px]:px-1.5 max-[500px]:py-4 max-[20rem]:scrollbar-thin scrollbar-thumb-amber-400 scrollbar-track-amber-200'>
     <ul className='overflow-y-scroll  flex flex-col max-h-[20rem]'>
-      {items?.map((v,i)=> <Item key={v.item} index={i} item={v}/>)}
+      {items?.map((v,i)=> <Item onClick={(e)=>setView(e.target.id)} view={view === v._id} setView={setView} key={v.item} index={i} item={v}/>)}
     </ul>
     </div>
     }

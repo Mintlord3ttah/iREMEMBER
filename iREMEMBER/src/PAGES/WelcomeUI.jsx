@@ -6,11 +6,10 @@ import HowItWorksCard from "../UI/HowItWorksCard";
 export default function WelcomeUI() {
     const storedId = localStorage.getItem("joker")
     const storedAccessToken = localStorage.getItem("accessToken")
-    const verify = storedAccessToken && storedId
     const navigate = useNavigate()
 
     function handleClick(){
-        if(!verify) return navigate("/auth/login")
+        if(!storedAccessToken) return navigate("/auth/login")
         navigate("/app")
     }
 

@@ -12,10 +12,9 @@ import Loader from "./Loader";
 import Favourite from "./Favourite";
 import OverlayBtn from "./OverlayBtn";
 
-export default function Item({item, index}) {
+export default function Item({item, index, view, setView, onClick}) {
   const {isSelect, edit, itemStatus, displayType, } = useDataContext()
   const [pickItem, setPickItem] = useState(false)
-  const [view, setView] = useState(false)
   const {mutate, status, isPending} = useMutateData({id: item._id, method: "PATCH"})
   const packed = item?.packed
   const priorityFlags = {
@@ -25,15 +24,12 @@ export default function Item({item, index}) {
     "mid-low": "text-orange-200", 
     low: "text-orange-100"}
     
-
     function handleEdit(e){
       if(e.target?.classList?.contains("item")) edit(item)
       if(e.target.closest(".edit")?.classList.contains("edit")) edit(item)
       if(e.target.closest(".item")?.classList.contains("edit")) edit(item)
     }
 
-  //  useEffect(()=>setIsFavourite(item.favourite ? "1" : "0"),[item.favourite])
-    
   if(!item) return
   return ( <>
   {displayType === "list" ?
@@ -66,7 +62,8 @@ export default function Item({item, index}) {
     :
     <div className="listItem relative flex cursor-pointer transition-all duration-300">
       {!isSelect && <div className="item-overlay absolute top-0 left-0 w-full h-full z-10 flex items-center justify-end gap-4 pr-4">
-        <OverlayBtn title={"View item details"} id={item?._id} onClick={()=> setView(view => !view)}>View...</OverlayBtn>
+        {!view ? <OverlayBtn title={"View item details"} onClick={onClick} id={item._id}>See more...</OverlayBtn> :
+        <OverlayBtn title={"View item details"} onClick={()=> setView("")} id={item._id}>See less...</OverlayBtn>}
         <OverlayBtn title={"Edit item"} label={"item"} onClick={handleEdit}>
           <FiEdit />
         </OverlayBtn>
@@ -74,26 +71,26 @@ export default function Item({item, index}) {
       </div>}
 
       <p className="border-l border-l-amber-700 p-4">{`${index + 1}`.padStart(2, '0')}</p>
-      <li className="border-b border-b-amber-700 p-2 flex gap-2 w-full flex-col">
-        <div className="flex gap-2 w-full items-center justify-center">
+      <li className="border-b border-b-amber-700 p-2 flex gap-2 w-full flex-col justify-center">
+        <div className="flex gap-2 w-full ">
           <div className={`flex-1 flex gap-1 max-[500px]:flex-col`}>
           {isSelect && <Checkbox state={item.selected} 
                                   status={status} name={"select"}
                                   handlePacked={()=>handleFieldState(setPickItem, pickItem, "selected", mutate)}/>}
           <div className="font-bold flex items-center gap-1.5 w-fit"><Favourite individualIsFavourite={item.favourite} /> {item.item} </div>
-          <p className={`flex-1 flex gap-1 ${!view ? "visibility-visible opacity-1" : "visibility-hidden opacity-0"} max-[500]:visibility-hidden max-[500]:opacity-0 transition-all duration-300`}>
+          <p className={`flex-1 flex gap-1 ${!view ? "block" : "hidden"} max-[600px]:hidden transition-all duration-300`}>
             &mdash;
-          <span> {truncateStr(item.purpose, view ? "all" : 30)}</span>
+          <span> {truncateStr(item.purpose, view ? "all" : 20)}</span>
           </p>
           </div>
           <p className="border-r pr-2 text-sm border-r-amber-600">{item.priority}</p>
           <p className="border-r pr-2 text-sm border-r-amber-600 font-bold">{item.count}</p>
           <p className={`${packed ? "text-green-700" : "text-yellow-900"} text-sm`}>{item.packed ? "Packed" : "Unpacked"}</p>
         </div>
-         <p className={`flex-1 flex gap-1 ${view ? "visibility-visible opacity-1" : "visibility-hidden opacity-0"} max-[500]:visibility-visible max-[500]:opacity-1 transition-all duration-300`}>
+         {view && <p className={`flex-1 flex gap-1 `}>
           &mdash;
         <span> {view && item.purpose}</span>
-        </p>
+        </p>}
       </li>
     </div>}
   </>)
