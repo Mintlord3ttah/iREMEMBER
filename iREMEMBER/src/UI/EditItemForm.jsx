@@ -30,8 +30,8 @@ export default function EditItemForm() {
   useEffect(()=>getItemStatus(status),[status])
 
   return <form onSubmit={handleSubmit} className='shadow-md-cstm w-[30rem] h-60 rounded-2xl bg-amber-400 flex flex-col gap-6 py-4'>
-    <Input defaultValue={itemToEdit.item} label={"Item"} fontSize={"text-2xl"} />
-    <Input defaultValue={itemToEdit.purpose} label={"Purpose"} />
+    <Input defaultValue={itemToEdit.item} label={"Item"} max={25} fontSize={"text-2xl"} />
+    <Input defaultValue={itemToEdit.purpose} max={100} label={"Purpose"} />
     <Input defaultValue={itemToEdit.count} label={"Count"} extra={<Packed packed={itemToEdit.packed} id={itemToEdit._id} />} />
     <div className='flex gap-8 items-center px-4'>
     <Priority defaultValue={itemToEdit.priority} width={"w-fit"} />
@@ -46,10 +46,10 @@ export default function EditItemForm() {
   </form>
 }
 
-function Input({label, fontSize="text-lg", defaultValue, extra}){
+function Input({label, fontSize="text-lg", defaultValue, extra, max=50}){
   return <label className={`border-b-2 border-amber-700 flex gap-4 items-center ${fontSize} px-3`}>
   <span className='font-bold'>{label}:</span>
-  <input type="text" name={label.toLowerCase()} defaultValue={defaultValue} className="w-full bg-transparent outline-none" />
+  <input type="text" max={max} name={label.toLowerCase()} defaultValue={defaultValue} className="w-full bg-transparent outline-none" />
   {extra}
 </label>
 }

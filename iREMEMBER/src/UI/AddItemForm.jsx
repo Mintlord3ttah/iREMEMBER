@@ -51,8 +51,8 @@ useEffect(()=>itemRef.current.focus(),[])
     </div>
      <Favourite />
   </div>
-  <input ref={itemRef} type="text" className="w-full bg-amber-100 rounded-sm h-8 px-2" name="item"  placeholder="Item Name" required/>
-  <input type="text" className="w-full bg-amber-100 rounded-sm h-8 px-2" name="purpose" placeholder="Purpose"/>
+  <input ref={itemRef} type="text" className="w-full bg-amber-100 rounded-sm h-8 px-2" name="item" max={25}  placeholder="Item Name" required/>
+  <input type="text" className="w-full bg-amber-100 rounded-sm h-8 px-2" name="purpose" max={100} placeholder="Purpose"/>
   <input type="number" max={50} min={1} className="w-full bg-amber-100 rounded-sm h-8 px-2" name="count" placeholder="Count"/>
   <Priority width={"w-full"} />
   <div className="flex w-full justify-between items-center">

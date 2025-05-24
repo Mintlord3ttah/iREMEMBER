@@ -32,6 +32,8 @@ export default function Item({item, index}) {
       if(e.target.closest(".item")?.classList.contains("edit")) edit(item)
     }
 
+  //  useEffect(()=>setIsFavourite(item.favourite ? "1" : "0"),[item.favourite])
+    
   if(!item) return
   return ( <>
   {displayType === "list" ?
@@ -72,21 +74,26 @@ export default function Item({item, index}) {
       </div>}
 
       <p className="border-l border-l-amber-700 p-4">{`${index + 1}`.padStart(2, '0')}</p>
-      <li className="border-b border-b-amber-700 p-2 flex gap-2 w-full items-center">
-        <div className={`flex-1 flex gap-1 ${view && "flex-col"} max-[500px]:flex-col`}>
-        {isSelect && <Checkbox state={item.selected} 
-                                 status={status} name={"select"}
-                                 handlePacked={()=>handleFieldState(setPickItem, pickItem, "selected", mutate)}/>}
-        <div className="font-bold flex items-center gap-1.5 w-fit"><Favourite individualIsFavourite={item.favourite} /> {item.item} </div>
-        <p className="flex-1 flex gap-1">
-          &mdash;
-        <span> {truncateStr(item.purpose, view ? "all" : 30)}</span>
-        </p>
+      <li className="border-b border-b-amber-700 p-2 flex gap-2 w-full flex-col">
+        <div className="flex gap-2 w-full items-center justify-center">
+          <div className={`flex-1 flex gap-1 max-[500px]:flex-col`}>
+          {isSelect && <Checkbox state={item.selected} 
+                                  status={status} name={"select"}
+                                  handlePacked={()=>handleFieldState(setPickItem, pickItem, "selected", mutate)}/>}
+          <div className="font-bold flex items-center gap-1.5 w-fit"><Favourite individualIsFavourite={item.favourite} /> {item.item} </div>
+          {!view && <p className="flex-1 flex gap-1">
+            &mdash;
+          <span> {truncateStr(item.purpose, view ? "all" : 30)}</span>
+          </p>}
+          </div>
+          <p className="border-r pr-2 text-sm border-r-amber-600">{item.priority}</p>
+          <p className="border-r pr-2 text-sm border-r-amber-600 font-bold">{item.count}</p>
+          <p className={`${packed ? "text-green-700" : "text-yellow-900"} text-sm`}>{item.packed ? "Packed" : "Unpacked"}</p>
         </div>
-
-        <p className="border-r pr-2 text-sm border-r-amber-600">{item.priority}</p>
-        <p className="border-r pr-2 text-sm border-r-amber-600 font-bold">{item.count}</p>
-        <p className={`${packed ? "text-green-700" : "text-yellow-900"} text-sm`}>{item.packed ? "Packed" : "Unpacked"}</p>
+        {view && <p className="flex-1 flex gap-1">
+          &mdash;
+        <span> {view && item.purpose}</span>
+        </p>}
       </li>
     </div>}
   </>)
