@@ -9,7 +9,8 @@ export default function Sorts() {
   const [order, setOrder] = useState("asc")
   
   function handleSortClick(e){
-    e.target.classList.contains("sort") && setSort(false)
+      if(e.target.type === "radio") return;
+      setSort(false)
   }
 
     return (

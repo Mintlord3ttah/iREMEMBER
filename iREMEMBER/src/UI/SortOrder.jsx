@@ -1,4 +1,3 @@
-import { useDataContext } from '../context/DataContext'
 
 export default function SortOrder({setOrder, order}) {
     
