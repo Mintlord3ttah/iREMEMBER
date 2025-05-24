@@ -7,7 +7,7 @@ import DivCenter from './DivCenter'
 import { useDataContext } from '../context/DataContext';
 
 export default function ItemsBoard() {
-      const {currentUser} = useDataContext()
+      const {currentUser, displayType} = useDataContext()
   
   const accessToken = localStorage.getItem("accessToken")
     const {data: items, isLoading, refetch} = useQuery({
@@ -24,9 +24,25 @@ export default function ItemsBoard() {
       </div>
     </div>:
     !isLoading && items?.length <= 0 ? <DivCenter sizeFull='size-full'>🚀 Welcome <span className='font-bold'>{currentUser?.name?.split(" ")[0]}</span>, Add Items To Get Started! 🚀</DivCenter> :
-    <ul className="grid grid-cols-3 max-[400px]:grid-cols-2 gap-y-1 max-[400px]:gap-y-4 max-[780px]:px-12 max-[715px]:px-4">
+    
+     displayType === "list" ?
+      <ul className="grid grid-cols-3 max-[400px]:grid-cols-2 gap-y-1 max-[400px]:gap-y-4 max-[780px]:px-12 max-[715px]:px-4">
         {items?.map(v=> <Item key={v.item} item={v}/>)}
         {isLoading && <GenLoader w='w-fit pl-4' />}
-    </ul>}
+    </ul> :
+    <div className='bg-amber-500 border-amber-400 border-2 rounded-2xl p-4 scrollbar-thin scrollbar-thumb-amber-400 scrollbar-track-amber-200'>
+    <ul className='overflow-y-scroll  flex flex-col max-h-[20rem]'>
+      <Item item={{_id: "1", item: "Item 1", purpose: "item one is to pack up most important items", priority: "high", count: 1, packed: false}} />
+      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+    </ul>
+    </div>
+    }
   </>
 }

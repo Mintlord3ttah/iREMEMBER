@@ -9,9 +9,11 @@ import Checkbox from "./Checkbox";
 import useMutateData from "../service/useMutateData";
 import GenLoader from "./GenLoader";
 import Loader from "./Loader";
+import Favourite from "./Favourite";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export default function Item({item}) {
-  const {isSelect, edit, itemStatus} = useDataContext()
+  const {isSelect, edit, itemStatus, displayType} = useDataContext()
   const [pickItem, setPickItem] = useState(false)
   const {mutate, status, isPending} = useMutateData({id: item._id, method: "PATCH"})
   const packed = item?.packed
@@ -28,8 +30,9 @@ export default function Item({item}) {
     }
 
   if(!item) return
-  // if(isLoading) return <GenLoader />
-  return (
+  if(isLoading) return <GenLoader />
+  return ( <>
+  {displayType === "grid" ?
     <div className="tooltip w-fit">
         <li onClick={handleClick} className="item relative hover:bg-amber-400 bg px-4 w-fit cursor-pointer flex items-center gap-3 rounded-2xl">
             {itemStatus === "pending" && <span className="size-5"><Loader /></span>}
@@ -56,7 +59,38 @@ export default function Item({item}) {
             </button>
         </div>
     </div>
-  )
+    :
+    <div className="listItem relative flex cursor-pointer">
+      <div className="item-overlay absolute top-0 left-0 w-full h-full z-10 flex items-center justify-end gap-4 pr-4">
+        <OverlayBtn title={"View item details"}>View...</OverlayBtn>
+        <OverlayBtn title={"Edit item"}>
+          <FiEdit />
+        </OverlayBtn>
+        <OverlayBtn title={"Delete item"}>
+          <RiDeleteBin6Line />
+        </OverlayBtn>
+      </div>
+
+      <p className="border-l border-l-amber-700 p-4">01</p>
+      <li className="border-b border-b-amber-700 p-2 flex gap-2 w-full items-center">
+        <p className="font-bold flex items-center gap-1.5"><Favourite /> {item.item} </p>
+        <p className="flex-1 flex gap-1">
+          &mdash; <span> {item.purpose}</span>
+        {/* <span> {truncateStr(item.purpose, 30)}</span> */}
+        </p>
+        <p className="border-r pr-2 text-sm border-r-amber-600">{item.priority}</p>
+        <p className="border-r pr-2 text-sm border-r-amber-600 font-bold">{item.count}</p>
+        <p className="text-sm">{item.packed ? "Packed" : "Unpacked"}</p>
+      </li>
+    </div>}
+  </>)
 }
 
 
+function OverlayBtn({children, title, onClick}) {
+  return (
+    <button title={title} className="cursor-pointer font-bold backdrop-blur-2xl hover:bg-amber-400/50 p-1 flex justify-center items-center">
+          {children}
+        </button>
+  )
+}

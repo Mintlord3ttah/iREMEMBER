@@ -17,7 +17,8 @@ const initialState = {
     isSigningUpStatus: "",
     accessToken: "",
     signingType: "",
-    itemStatus: ""
+    itemStatus: "",
+    displayType: "grid", // grid or list
 }
 
 function reducer(state, action){
@@ -91,6 +92,11 @@ function reducer(state, action){
                 ...state,
                itemStatus: action.payload
             }
+        case "item/display-type":
+            return {
+                ...state,
+               displayType: action.payload
+            }
         default:
             throw new Error("unknown action");
             
@@ -99,7 +105,7 @@ function reducer(state, action){
 
 export default function DataContextProvider({children}) {
     const [{isSelect, isFavourite, isEdit, isSigningUpStatus,
-           accessToken, itemToEdit, sessionId, currentUser, itemStatus, signingType, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
+           accessToken, itemToEdit, sessionId, currentUser, displayType, itemStatus, signingType, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
     function select(){
         dispatch({type: "item/select"})
     }
@@ -138,6 +144,9 @@ export default function DataContextProvider({children}) {
     function getItemStatus(status){
         dispatch({type: "item/status", payload: status})
     }
+    function setDisplayType(type){
+        dispatch({type: "item/display-type", payload: type})
+    }
     // const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
     console.log(sortStr)
   return <Context.Provider value={{
@@ -168,6 +177,8 @@ export default function DataContextProvider({children}) {
     itemStatus,
     signingType,
     sortStr,
+    setDisplayType,
+    displayType,
   }}>
     {children}
   </Context.Provider>

@@ -156,3 +156,15 @@
   background-color: #0000002d;
 }
 
+.item-overlay{
+  visibility: hidden;
+  opacity: 0;
+  background-color: #968a8aa2;
+  transition: all 0.5s ease-in-out;
+}
+
+.listItem:hover > .item-overlay{
+  visibility: visible;
+  opacity: 1;
+}
+
