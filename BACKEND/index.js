@@ -7,12 +7,12 @@ import cookieParser from 'cookie-parser'
 export const app = express()
 app.use(cors({
     // origin: "http://localhost:5173", // Specify frontend origin
-    origin: "https://iremember-eight.vercel.app", // Specify frontend origin
+    origin: "https://i-remember-alpha.vercel.app", // Specify frontend origin
     credentials: true // Allow cookies and authentication headers
 }))
 app.use((req, res, next) => {
   // res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.header("Access-Control-Allow-Origin", "https://iremember-eight.vercel.app");
+  res.header("Access-Control-Allow-Origin", "https://i-remember-alpha.vercel.app");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });

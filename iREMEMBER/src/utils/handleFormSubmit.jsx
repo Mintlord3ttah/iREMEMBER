@@ -1,7 +1,7 @@
 import toast from "react-hot-toast"
 import { BACKEND_URL } from "./backendSite"
 
-const FRONTEND_URL="https://iremember-eight.vercel.app/auth/processing"
+const FRONTEND_URL="https://i-remember-alpha.vercel.app/auth/processing"
 // const FRONTEND_URL="http://localhost:5173/auth/processing"
 
 export async function handleFormSubmit(e, placeholder=""){
