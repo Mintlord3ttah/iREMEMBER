@@ -81,19 +81,19 @@ export default function Item({item, index}) {
                                   status={status} name={"select"}
                                   handlePacked={()=>handleFieldState(setPickItem, pickItem, "selected", mutate)}/>}
           <div className="font-bold flex items-center gap-1.5 w-fit"><Favourite individualIsFavourite={item.favourite} /> {item.item} </div>
-          {!view && <p className="flex-1 flex gap-1">
+          <p className={`flex-1 flex gap-1 ${!view ? "visibility-visible opacity-1" : "visibility-hidden opacity-0"} max-[500]:visibility-hidden max-[500]:opacity-0 transition-all duration-300`}>
             &mdash;
           <span> {truncateStr(item.purpose, view ? "all" : 30)}</span>
-          </p>}
+          </p>
           </div>
           <p className="border-r pr-2 text-sm border-r-amber-600">{item.priority}</p>
           <p className="border-r pr-2 text-sm border-r-amber-600 font-bold">{item.count}</p>
           <p className={`${packed ? "text-green-700" : "text-yellow-900"} text-sm`}>{item.packed ? "Packed" : "Unpacked"}</p>
         </div>
-        {view && <p className="flex-1 flex gap-1">
+         <p className={`flex-1 flex gap-1 ${view ? "visibility-visible opacity-1" : "visibility-hidden opacity-0"} max-[500]:visibility-visible max-[500]:opacity-1 transition-all duration-300`}>
           &mdash;
         <span> {view && item.purpose}</span>
-        </p>}
+        </p>
       </li>
     </div>}
   </>)
