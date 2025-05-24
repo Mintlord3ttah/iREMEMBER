@@ -18,7 +18,7 @@ const initialState = {
     accessToken: "",
     signingType: "",
     itemStatus: "",
-    displayType: "grid", // grid or list
+    displayType: "list", // grid or list
 }
 
 function reducer(state, action){

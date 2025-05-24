@@ -15,7 +15,7 @@ export default function ItemsBoard() {
         queryFn: () =>accessToken && getItems({accessToken, id: currentUser?._id}),
     })
 
-  return <>
+  return <div className='max-[780px]:px-12 max-[715px]:px-4'>
   {isLoading ? <GenLoader /> : !isLoading && !items ?
     <div className='flex flex-col w-full h-full gap-6 justify-center items-center'>
       <DivCenter>❌ Something went wrong 😰</DivCenter>
@@ -26,23 +26,15 @@ export default function ItemsBoard() {
     !isLoading && items?.length <= 0 ? <DivCenter sizeFull='size-full'>🚀 Welcome <span className='font-bold'>{currentUser?.name?.split(" ")[0]}</span>, Add Items To Get Started! 🚀</DivCenter> :
     
      displayType === "list" ?
-      <ul className="grid grid-cols-3 max-[400px]:grid-cols-2 gap-y-1 max-[400px]:gap-y-4 max-[780px]:px-12 max-[715px]:px-4">
+      <ul className="grid grid-cols-3 max-[400px]:grid-cols-2 gap-y-1 max-[400px]:gap-y-4">
         {items?.map(v=> <Item key={v.item} item={v}/>)}
         {isLoading && <GenLoader w='w-fit pl-4' />}
     </ul> :
-    <div className='bg-amber-500 border-amber-400 border-2 rounded-2xl p-4 scrollbar-thin scrollbar-thumb-amber-400 scrollbar-track-amber-200'>
+    <div className='bg-amber-500 border-amber-400 border-2 rounded-2xl p-4 max-[500px]:px-1.5 max-[500px]:py-4 max-[20rem]:scrollbar-thin scrollbar-thumb-amber-400 scrollbar-track-amber-200'>
     <ul className='overflow-y-scroll  flex flex-col max-h-[20rem]'>
-      <Item item={{_id: "1", item: "Item 1", purpose: "item one is to pack up most important items", priority: "high", count: 1, packed: false}} />
-      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
-      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
-      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
-      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
-      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
-      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
-      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
-      <Item item={{_id: "1", item: "Item 1", purpose: "Purpose 1", priority: "high", count: 1, packed: false}} />
+      {items?.map((v,i)=> <Item key={v.item} index={i} item={v}/>)}
     </ul>
     </div>
     }
-  </>
+  </div>
 }

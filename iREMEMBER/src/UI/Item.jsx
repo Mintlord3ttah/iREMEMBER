@@ -10,11 +10,12 @@ import useMutateData from "../service/useMutateData";
 import GenLoader from "./GenLoader";
 import Loader from "./Loader";
 import Favourite from "./Favourite";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import OverlayBtn from "./OverlayBtn";
 
-export default function Item({item}) {
-  const {isSelect, edit, itemStatus, displayType} = useDataContext()
+export default function Item({item, index}) {
+  const {isSelect, edit, itemStatus, displayType, } = useDataContext()
   const [pickItem, setPickItem] = useState(false)
+  const [view, setView] = useState(false)
   const {mutate, status, isPending} = useMutateData({id: item._id, method: "PATCH"})
   const packed = item?.packed
   const priorityFlags = {
@@ -23,18 +24,19 @@ export default function Item({item}) {
     normal: "text-orange-300", 
     "mid-low": "text-orange-200", 
     low: "text-orange-100"}
+    
 
-    function handleClick(e){
-      const contains = e.target?.classList?.contains("item") || e.target.closest(".edit").classList.contains("edit")
-      if(contains) edit(item)
+    function handleEdit(e){
+      if(e.target?.classList?.contains("item")) edit(item)
+      if(e.target.closest(".edit")?.classList.contains("edit")) edit(item)
+      if(e.target.closest(".item")?.classList.contains("edit")) edit(item)
     }
 
   if(!item) return
-  if(isLoading) return <GenLoader />
   return ( <>
-  {displayType === "grid" ?
+  {displayType === "list" ?
     <div className="tooltip w-fit">
-        <li onClick={handleClick} className="item relative hover:bg-amber-400 bg px-4 w-fit cursor-pointer flex items-center gap-3 rounded-2xl">
+        <li onClick={handleEdit} className="item relative hover:bg-amber-400 bg px-4 w-fit cursor-pointer flex items-center gap-3 rounded-2xl">
             {itemStatus === "pending" && <span className="size-5"><Loader /></span>}
           {isSelect && <Checkbox state={item.selected} 
                                  status={status} name={"select"}
@@ -54,43 +56,40 @@ export default function Item({item}) {
             <p className="flex gap-1 items-center"><span className="font-bold">Count:</span> {item?.count} &#x2022; 
               <Packed packed={packed} id={item._id}/>
             </p>
-            <button onClick={handleClick} className="edit cursor-pointer size-8 text-xl backdrop-blur-2xl absolute top-0 right-0 bg-trans flex justify-center items-center">
+            <button onClick={handleEdit} className="edit cursor-pointer size-8 text-xl backdrop-blur-2xl absolute top-0 right-0 bg-trans flex justify-center items-center">
               <FiEdit />
             </button>
         </div>
     </div>
     :
-    <div className="listItem relative flex cursor-pointer">
-      <div className="item-overlay absolute top-0 left-0 w-full h-full z-10 flex items-center justify-end gap-4 pr-4">
-        <OverlayBtn title={"View item details"}>View...</OverlayBtn>
-        <OverlayBtn title={"Edit item"}>
+    <div className="listItem relative flex cursor-pointer transition-all duration-300">
+      {!isSelect && <div className="item-overlay absolute top-0 left-0 w-full h-full z-10 flex items-center justify-end gap-4 pr-4">
+        <OverlayBtn title={"View item details"} id={item?._id} onClick={()=> setView(view => !view)}>View...</OverlayBtn>
+        <OverlayBtn title={"Edit item"} label={"item"} onClick={handleEdit}>
           <FiEdit />
         </OverlayBtn>
-        <OverlayBtn title={"Delete item"}>
-          <RiDeleteBin6Line />
-        </OverlayBtn>
-      </div>
+        <DelteItem id={item?._id} />
+      </div>}
 
-      <p className="border-l border-l-amber-700 p-4">01</p>
+      <p className="border-l border-l-amber-700 p-4">{`${index + 1}`.padStart(2, '0')}</p>
       <li className="border-b border-b-amber-700 p-2 flex gap-2 w-full items-center">
-        <p className="font-bold flex items-center gap-1.5"><Favourite /> {item.item} </p>
+        <div className={`flex-1 flex gap-1 ${view && "flex-col"} max-[500px]:flex-col`}>
+        {isSelect && <Checkbox state={item.selected} 
+                                 status={status} name={"select"}
+                                 handlePacked={()=>handleFieldState(setPickItem, pickItem, "selected", mutate)}/>}
+        <div className="font-bold flex items-center gap-1.5 w-fit"><Favourite individualIsFavourite={item.favourite} /> {item.item} </div>
         <p className="flex-1 flex gap-1">
-          &mdash; <span> {item.purpose}</span>
-        {/* <span> {truncateStr(item.purpose, 30)}</span> */}
+          &mdash;
+        <span> {truncateStr(item.purpose, view ? "all" : 30)}</span>
         </p>
+        </div>
+
         <p className="border-r pr-2 text-sm border-r-amber-600">{item.priority}</p>
         <p className="border-r pr-2 text-sm border-r-amber-600 font-bold">{item.count}</p>
-        <p className="text-sm">{item.packed ? "Packed" : "Unpacked"}</p>
+        <p className={`${packed ? "text-green-700" : "text-yellow-900"} text-sm`}>{item.packed ? "Packed" : "Unpacked"}</p>
       </li>
     </div>}
   </>)
 }
 
 
-function OverlayBtn({children, title, onClick}) {
-  return (
-    <button title={title} className="cursor-pointer font-bold backdrop-blur-2xl hover:bg-amber-400/50 p-1 flex justify-center items-center">
-          {children}
-        </button>
-  )
-}

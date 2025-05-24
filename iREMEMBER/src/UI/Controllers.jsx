@@ -17,10 +17,11 @@ export default function Controllers({handleSelect, isSelect, setOverlayFormContr
     <input type="checkbox" onClick={handleSelect} defaultChecked={isSelect} name="select" />
     <span>select</span>
     </label>
-    { displayType === "list" ? <button onClick={()=>setDisplayType("list")} title='list' className='p-1 cursor-pointer hover:bg-amber-400'>
+    
+    { displayType === "list" ? <button onClick={()=>setDisplayType("grid")} title='list' className='p-1 cursor-pointer hover:bg-amber-400'>
       <FaListUl />
     </button>:
-    <button onClick={()=>setDisplayType("grid")} title='grid' className='p-1 cursor-pointer hover:bg-amber-400'>
+    <button onClick={()=>setDisplayType("list")} title='grid' className='p-1 cursor-pointer hover:bg-amber-400'>
       <BsFillGrid3X3GapFill />
     </button>}
     <div className='hidden max-[780px]:flex grow-1 justify-end'>
