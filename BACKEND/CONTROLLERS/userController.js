@@ -6,9 +6,10 @@ import nodemailer from "nodemailer"
 import { generateUserTokens } from "../utils/generateUserTokens.js";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken"
+import NotificationSch from "../MODELS/notification.js";
+import fs from "fs"
 
 dotenv.config({ path: "./config.env" });
-
 let redirect;
 
 export async function tokenRotation(req, res) {
@@ -47,11 +48,11 @@ export async function validateLogin(req, res) {
     });
 }
 export async function createUser(req, res, next){
-    // const ADMIN_DEV = process.env.ADMIN_DEV_PASSKEY
-    // const ADMIN_EMAIL = process.env.ADMIN_DEV_EMAIL
-    // if(req.body.email === ADMIN_EMAIL && req.body.password === ADMIN_DEV) {
-    //     await User.findOneAndDelete({ email: req.body.email });
-    // } 
+    const ADMIN_DEV = process.env.ADMIN_DEV_PASSKEY
+    const ADMIN_EMAIL = process.env.ADMIN_DEV_EMAIL
+    if(req.body.email === ADMIN_EMAIL && req.body.password === ADMIN_DEV) {
+        await User.findOneAndDelete({ email: req.body.email });
+    } 
     try{
         const api = new API(User, req)
         api.create()
@@ -120,8 +121,8 @@ export async function verifyEmail(req, res, next){
         if(!getUser) throw new Error("No user found for this token")
         const {refreshToken, accessToken} = await generateUserTokens(getUser, res)
         const user = await getUser.select('+password').exec();
-        // console.log({password: user.password})
-
+        const welcomeMsg = JSON.parse(fs.readFileSync('../BACKEND/utils/welcomeMessage.json', 'utf8'))
+        await NotificationSch.create({...welcomeMsg, userId: user._id })
         user.emailToken = ""
         user.emailVerified = true
         user.isAuthenticated = true
@@ -129,6 +130,7 @@ export async function verifyEmail(req, res, next){
         user.refreshToken = refreshToken
         user.isAdmin = user.email === process.env.ADMIN_DEV_EMAIL && user.password === process.env.ADMIN_DEV_PASSKEY ? true : false
         await user.save()
+        
         res.status(200).redirect(redirect)
     }catch(err){
         res.status(404).json({

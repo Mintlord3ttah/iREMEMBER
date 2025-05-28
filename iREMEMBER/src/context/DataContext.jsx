@@ -19,6 +19,9 @@ const initialState = {
     signingType: "",
     itemStatus: "",
     displayType: "list", // grid or list
+    overlayFormControls: false,
+    notifications: [],
+    openedMessageId: ""
 }
 
 function reducer(state, action){
@@ -60,6 +63,11 @@ function reducer(state, action){
                 ...state,
                 items: action.payload
             }
+        case "notifications/fetch":
+            return {
+                ...state,
+                notifations: action.payload
+            }
         case "user/fetch":
             const id = action.payload.split("")
                        .map((v,i)=> i % 4 === 0 ? v + "." : v).join("")
@@ -97,6 +105,16 @@ function reducer(state, action){
                 ...state,
                displayType: action.payload
             }
+        case "overlay/form&notificatio-control":
+            return {
+                ...state,
+               overlayFormControls: action.payload
+            }
+        case "message/opened":
+            return {
+                ...state,
+                openedMessageId: action.payload
+            }
         default:
             throw new Error("unknown action");
             
@@ -105,7 +123,10 @@ function reducer(state, action){
 
 export default function DataContextProvider({children}) {
     const [{isSelect, isFavourite, isEdit, isSigningUpStatus,
-           accessToken, itemToEdit, sessionId, currentUser, displayType, itemStatus, signingType, items, shouldFetch, sortStr, sortOrder}, dispatch] = useReducer(reducer, initialState)
+           accessToken, itemToEdit, overlayFormControls, 
+           sessionId, currentUser, displayType, itemStatus, 
+           signingType, items, shouldFetch, sortStr, sortOrder,
+           notifations, openedMessageId}, dispatch] = useReducer(reducer, initialState)
     function select(){
         dispatch({type: "item/select"})
     }
@@ -129,6 +150,9 @@ export default function DataContextProvider({children}) {
     function getAllItems(items){
         dispatch({type: "items/fetch", payload: items})
     }
+    function getNotifications(notifation){
+        dispatch({type: "notifications/fetch", payload: notifation})
+    }
     function getUserId(id){
         dispatch({type: "user/fetch", payload: id})
     }
@@ -147,8 +171,12 @@ export default function DataContextProvider({children}) {
     function setDisplayType(type){
         dispatch({type: "item/display-type", payload: type})
     }
-    // const memoizedSortStr = useMemo(()=>sortStr,[sortStr])
-    console.log(sortStr)
+    function setOverlayFormControls(boolean){
+        dispatch({type: "overlay/form&notificatio-control", payload: boolean})
+    }
+    function setOpenedMessageId(messageId){
+        dispatch({type: "message/opened", payload: messageId})
+    }
   return <Context.Provider value={{
     select,
     isSelect,
@@ -179,6 +207,12 @@ export default function DataContextProvider({children}) {
     sortStr,
     setDisplayType,
     displayType,
+    overlayFormControls,
+    setOverlayFormControls,
+    getNotifications,
+    notifations,
+    setOpenedMessageId,
+    openedMessageId
   }}>
     {children}
   </Context.Provider>

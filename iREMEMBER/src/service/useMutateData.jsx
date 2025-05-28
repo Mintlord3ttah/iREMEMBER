@@ -3,7 +3,7 @@ import postData from "./postData";
 import { useDataContext } from "../context/DataContext";
 
 export default function useMutateData({id="", method, url=""}){
-  const {getAllItems, accessToken} = useDataContext()
+  const {getAllItems, accessToken, getNotifications} = useDataContext()
     const queryClient = useQueryClient()
 
     const {mutate, status, isPending} = useMutation({
@@ -12,11 +12,12 @@ export default function useMutateData({id="", method, url=""}){
       },
         onSuccess: (data) => {
           if(!data) return // toast.error("Conection Error")
-            queryClient.invalidateQueries(["items"])
+            url.includes("notifications") ? queryClient.invalidateQueries(["notifications"]) : queryClient.invalidateQueries(["items"])
             queryClient.setQueryData(["items"], (oldData) => {
-              const newData = data.data.items
+              const newData = data.data.items 
+              const newNotification = data.data.notification
               // const oldItems = oldData?.data.items
-              getAllItems(newData)
+              newData ? getAllItems(newData) : getNotifications(newNotification)
             })
             console.log(data);
           },

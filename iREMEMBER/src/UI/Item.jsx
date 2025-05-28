@@ -11,6 +11,7 @@ import GenLoader from "./GenLoader";
 import Loader from "./Loader";
 import Favourite from "./Favourite";
 import OverlayBtn from "./OverlayBtn";
+import ItemOverlay from "./ItemOverlay";
 
 export default function Item({item, index, view, setView, onClick}) {
   const {isSelect, edit, itemStatus, displayType, } = useDataContext()
@@ -61,23 +62,23 @@ export default function Item({item, index, view, setView, onClick}) {
     </div>
     :
     <div className="listItem relative flex cursor-pointer transition-all duration-300">
-      {!isSelect && <div className="item-overlay absolute top-0 left-0 w-full h-full z-10 flex items-center justify-end gap-4 pr-4">
+      {!isSelect && <ItemOverlay>
         {!view ? <OverlayBtn title={"View item details"} onClick={onClick} id={item._id}>See more...</OverlayBtn> :
         <OverlayBtn title={"View item details"} onClick={()=> setView("")} id={item._id}>See less...</OverlayBtn>}
         <OverlayBtn title={"Edit item"} label={"item"} onClick={handleEdit}>
           <FiEdit />
         </OverlayBtn>
         <DelteItem id={item?._id} />
-      </div>}
+      </ItemOverlay>}
 
       <p className="border-l border-l-amber-700 p-4">{`${index + 1}`.padStart(2, '0')}</p>
       <li className="border-b border-b-amber-700 p-2 flex gap-2 w-full flex-col justify-center">
         <div className="flex gap-2 w-full ">
-          <div className={`flex-1 flex gap-1 max-[500px]:flex-col`}>
+          <div className={`flex-1 flex gap-1`}>
           {isSelect && <Checkbox state={item.selected} 
                                   status={status} name={"select"}
                                   handlePacked={()=>handleFieldState(setPickItem, pickItem, "selected", mutate)}/>}
-          <div className="font-bold flex items-center gap-1.5 w-fit"><Favourite individualIsFavourite={item.favourite} /> {item.item} </div>
+          <div className="font-bold flex items-center gap-1.5 w-fit"><Favourite individualIsFavourite={item.favourite} /> {truncateStr(item.item, 7)} </div>
           <p className={`flex-1 flex gap-1 ${!view ? "block" : "hidden"} max-[600px]:hidden transition-all duration-300`}>
             &mdash;
           <span> {truncateStr(item.purpose, view ? "all" : 20)}</span>

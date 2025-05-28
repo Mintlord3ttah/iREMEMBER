@@ -2,6 +2,7 @@ import toast from "react-hot-toast"
 import { BACKEND_URL } from "../utils/backendSite"
 
 export async function getUser(filter) {
+    // const navigate = useNavigate()
     if(!filter) return toast.error("No filter provided")
     try{ 
     const res = await fetch(`${BACKEND_URL}/users/${filter}`,{
@@ -9,7 +10,12 @@ export async function getUser(filter) {
             credentials: "include" // Sends HttpOnly cookie automatically
         })
     const data = await res.json()
-    console.log(data)
+    if(!data.data.user?.accessToken){
+        localStorage.removeItem("accessToken");
+        window.location.href = "/auth/login"
+
+        throw new Error("Session expired, please login again");
+        }
     return data.data.user
 }catch(error){
     console.log(error.message)
@@ -17,11 +23,13 @@ export async function getUser(filter) {
 }
 
 export async function refreshAccessToken() {
+
     try{
-        const response = await fetch(BACKEND_URL +"/refresh-token", {
+        const response = await fetch(BACKEND_URL +"/users/refresh-token", {
             method: "POST",
             credentials: "include" // Sends HttpOnly cookie automatically
         });
+        console.log(response)
         if (!response.ok) throw new Error("Failed to refresh");
         const data = await response.json();
         localStorage.setItem("accessToken", data.accessToken);

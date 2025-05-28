@@ -3,7 +3,7 @@ import { BACKEND_URL } from "../utils/backendSite";
 
 export default async function postData(id="", method, token, newData, path=""){
     if(!token) return
-    try{const url = path.length ? path :
+    try{const url = path.length ? BACKEND_URL + path :
                 id.length ? `${BACKEND_URL}/items/item?itemId=${id}`:
                             `${BACKEND_URL}/items`
 

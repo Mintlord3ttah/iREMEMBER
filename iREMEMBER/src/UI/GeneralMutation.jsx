@@ -14,7 +14,7 @@ const endpoints = {
     "wipe-not-favourite": "exfavourite",
     "wipe-not-priority|favourite": "expriority,exfavourite"
 }
-const GeneralMutation = memo(function GeneralMutation() {
+const GeneralMutation = memo(function GeneralMutation({w="w-fit"}) {
     const {isSelect, select, getItemStatus} = useDataContext()
     const [endpoint, setEndpoint] = useState("")
     const {mutate, status} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `${BACKEND_URL}/items/db/${endpoints[endpoint]}`}) :
@@ -29,7 +29,7 @@ const GeneralMutation = memo(function GeneralMutation() {
     useEffect(()=>{endpoint.length && mutate(JSON.stringify({select: "null"}))},[endpoint]) // fake data to occupy the vaccum
     useEffect(()=>getItemStatus(status),[status])
 
-    return <select onChange={handleClick} defaultValue={"Gen.Mutation"} name="mutation" className="w-fit bg-amber-100 rounded-sm h-8 px-2" placeholder="Priority">
+    return <select onChange={handleClick} defaultValue={"Gen.Mutation"} name="mutation" className={`${w} bg-amber-100 rounded-sm h-8 px-2`} placeholder="Priority">
         <option className="font-bold" value={"Gen.Mutation"}>Gen.Mutation</option>
         <option value="pack-all">Pack all</option>
         <option value="unpack-all">Unpack all</option>

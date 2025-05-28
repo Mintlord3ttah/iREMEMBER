@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    notification: {
+        default: "on",
+        type: String
+    }
 })
 
 // RETRIEVE PASSWORD

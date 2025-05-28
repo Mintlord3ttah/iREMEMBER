@@ -3,6 +3,7 @@ import cors from "cors"
 import item_router from './ROUTES/itemsRouter.js'
 import user_router from './ROUTES/usersRouter.js'
 import cookieParser from 'cookie-parser'
+import { notification_router } from './ROUTES/notificationRouter.js'
 
 export const app = express()
 app.use(cors({
@@ -31,3 +32,4 @@ app.get("/", (req, res)=>{
 // USERS ROUTE HANDLERS
 app.use("/api/v1/users", user_router)
 app.use("/api/v1/items", item_router)
+app.use("/api/v1/notifications", notification_router)

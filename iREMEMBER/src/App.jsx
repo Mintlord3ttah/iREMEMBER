@@ -14,6 +14,11 @@ import {
 import Login from './PAGES/Login'
 import Signup from './PAGES/Signup'
 import Processing from './PAGES/Processing'
+import NotificationUI from './PAGES/Notification'
+import NotificationLandingPage from './PAGES/NotificationLandingPage'
+import MessageUI from './PAGES/MessageUI'
+import CalenderUI from './PAGES/CalenderUI'
+import { RefreshTokensProvider } from './context/AuthContext'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,13 +36,19 @@ export default function App() {
     <BrowserRouter>
       <Navigation />
       <Toaster />
-      {/* <Overlay /> */}
       <Routes>
         <Route element={<WelcomeUI />} path='/' />
-        <Route element={<Application />} path='/app' />
-        <Route element={<Login />} path="/auth/login" />
         <Route element={<Signup />} path="/auth/signup" />
+        <Route element={<Login />} path="/auth/login" />
         <Route element={<Processing />} path="/auth/processing" />
+        <Route element={<RefreshTokensProvider />} path='/app'>
+          <Route index element={<Application />} />
+          <Route element={<NotificationUI />} path='/app/notifications'>
+            <Route element={<NotificationLandingPage />} path='/app/notifications' />
+            <Route element={<MessageUI />} path='/app/notifications/message' />
+            <Route element={<CalenderUI />} path='/app/notifications/set' />
+          </Route>
+        </Route>
       </Routes>
       <Footer />
      </BrowserRouter>
