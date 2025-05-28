@@ -8,12 +8,12 @@ import { notification_router } from './ROUTES/notificationRouter.js'
 export const app = express()
 app.use(cors({
     // origin: "http://localhost:5173", // Specify frontend origin
-    origin: "https://i-remember-alpha.vercel.app", // Specify frontend origin
+    origin: "https://iremember-eta.vercel.app", // Specify frontend origin
     credentials: true // Allow cookies and authentication headers
 }))
 app.use((req, res, next) => {
   // res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.header("Access-Control-Allow-Origin", "https://i-remember-alpha.vercel.app");
+  res.header("Access-Control-Allow-Origin", "https://iremember-eta.vercel.app");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
