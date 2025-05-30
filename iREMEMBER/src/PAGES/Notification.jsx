@@ -13,24 +13,13 @@ import SwitchBtn from '../UI/NotificationBtn'
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDataContext } from "../context/DataContext";
 import GenLoader from "../UI/GenLoader";
-import { getItems } from "../service/getItems";
-import { useQuery } from "@tanstack/react-query";
-import { BACKEND_URL } from "../utils/backendSite";
-import { promiseWebSocketConn } from "../service/webscoketConn";
-import useWebsocket from "../service/useWebsocket";
 
 export default function NotificationUI() {
     const navigate = useNavigate()
     const [notification, SetNotification] = useState(true)
     const {getNotifications, currentUser} = useDataContext()
     
-
-  // const [message, setMessage] = useState("");
-  const [socket, setSocket] = useState(null);
-
-  
-  useWebsocket()
-  useEffect(()=>{!notification && toast("You will no longer receive notifications about relevant events")},[notification])
+    useEffect(()=>{!notification && toast("You will no longer receive notifications about relevant events")},[notification])
     
     if(!currentUser?._id) return <div className="w-full h-screen flex flex-col items-center justify-center">
        <GenLoader />

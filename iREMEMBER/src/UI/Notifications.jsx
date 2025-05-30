@@ -15,6 +15,7 @@ export default function Notifications() {
                 url: `/notifications?userId=${currentUser._id}`
               })
           })
+          console.log(notifications)
   if(!notifications) return <div className='w-full h-full'>
     <GenLoader />
   </div>

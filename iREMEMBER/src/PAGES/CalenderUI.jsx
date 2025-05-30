@@ -39,9 +39,16 @@ export default function CalenderUI() {
     }
 
     function handleSaveNotification(){
+      const calcTime = +hr === 12 && !meridean ? 0 : +hr + 12
+      const intrisicTime = !meridean ? // calcuated time for non-african time: hr + 12
+            `${padStartNumber(2, calcTime)}:${padStartNumber(2, min)}:${padStartNumber(2, sec)}`: 
+            `${padStartNumber(2, hr)}:${padStartNumber(2, min)}:${padStartNumber(2, sec)}`
+
+            console.log({intrisicTime, meridean, calcTime})
       const notificationData = {
         date,
         time,
+        intrisicTime,
         subject: subjectRef.current?.value,
         message: messageRef.current?.value,
         userId: currentUser._id,
@@ -58,7 +65,8 @@ export default function CalenderUI() {
         <p>Set the date and time you want to get notified for the event.</p>
         <Output label={"Date"} permit={value?.toISOString().length}
         buttons={
-                isSetDate ? null
+                isSetDate ? <CancelBtn onClick={()=>setIsSetDate(false)} />
+                
                 : <button onClick={()=>setIsSetDate(true)} className='bg-amber-500 hover:bg-amber-600 py-2 px-4 rounded-2xl'>ok</button>
         }>
             {date}
@@ -66,8 +74,9 @@ export default function CalenderUI() {
         </Output>
         <Output label={"Time"} permit={isSetDate}
         buttons={
-                isSetTime ? null
-                : <button onClick={()=>setIsSetTime(true)} className='bg-amber-500 hover:bg-amber-600 py-2 px-4 rounded-2xl'>ok</button>
+                isSetTime ? <CancelBtn onClick={()=>setIsSetTime(false)} />
+                : 
+                <button onClick={()=>setIsSetTime(true)} className='bg-amber-500 hover:bg-amber-600 py-2 px-4 rounded-2xl'>ok</button>
             }>
             {time}
             </Output>
@@ -105,4 +114,7 @@ export default function CalenderUI() {
 
 
 // <button onClick={()=>setIsSetDate(false)} className='bg-amber-500 hover:bg-amber-600 py-2 px-4 rounded-2xl'>edit</button>
-// <button onClick={()=>setIsSetTime(false)} className='bg-amber-500 hover:bg-amber-600 py-2 px-4 rounded-2xl'>edit</button>
+
+function CancelBtn({onClick}){
+  return <button onClick={onClick} className='size-6 cursor-pointer border hover:bg-amber-600 rounded-full'>&times;</button>
+}

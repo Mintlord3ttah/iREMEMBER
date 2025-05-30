@@ -15,6 +15,7 @@ const tokenSchema = mongoose.Schema({
     message: String,
     date: String,
     time: String,
+    intrisicTime: String,
     status: {
         type: String,
         enum: ["unread", "opened", "pending"],

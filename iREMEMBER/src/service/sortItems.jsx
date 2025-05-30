@@ -16,7 +16,7 @@ export async function sortItems({sortObj, id}){
     const data = await res.json()
     return data.data.items
 }catch(error){
-    console.log(error.message)
+    // console.log(error.message)
     toast.error(error.message)
 }
 }

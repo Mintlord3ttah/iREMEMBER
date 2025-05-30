@@ -18,7 +18,7 @@ export async function getUser(filter) {
         }
     return data.data.user
 }catch(error){
-    console.log(error.message)
+    // console.log(error.message)
 }
 }
 
@@ -29,13 +29,12 @@ export async function refreshAccessToken() {
             method: "POST",
             credentials: "include" // Sends HttpOnly cookie automatically
         });
-        console.log(response)
         if (!response.ok) throw new Error("Failed to refresh");
         const data = await response.json();
         localStorage.setItem("accessToken", data.accessToken);
 
     }catch(error){
-        console.log(error.message)
+        // console.log(error.message)
         toast.error(error.message)
     }
     return true

@@ -168,7 +168,6 @@ export async function getUsers(req, res, next){
     }
     next()
 }
-
 export async function getUserByToken(req, res, next){
     try{
         const user = await User.findOne({accessToken: req.query.token})

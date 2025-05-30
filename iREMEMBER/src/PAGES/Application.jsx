@@ -20,7 +20,6 @@ import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import Sorts from "../UI/Sorts";
 import RightOverlayBoard from "../UI/RightOverlayBoard";
 import { useAuthContext } from "../context/AuthContext";
-import useWebsocket from "../service/useWebsocket";
 
 export default function Application() {
   const {select, isEdit, isSelect,setOverlayFormControls,
@@ -32,8 +31,6 @@ export default function Application() {
   function handleSelect(e){
     select()
   }
-
-  useWebsocket()
 
   if(loading || !currentUser?._id) return <ProcessUI />
   return (

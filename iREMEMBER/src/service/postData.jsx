@@ -22,7 +22,7 @@ export default async function postData(id="", method, token, newData, path=""){
     if(method === "DELETE" && response.status === 204) return "SUCCESS"
     return response.json();
 }catch(error){
-    console.error(error.message)
+    // console.error(error.message)
     toast.error(error.message)
 }
   }

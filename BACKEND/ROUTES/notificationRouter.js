@@ -1,7 +1,10 @@
 import express from "express"
-import { createNotification, deleteAllNotifications, getNotification, updateNotification, userSpecificNotifications } from "../CONTROLLERS/notificationContr.js"
+import { createNotification, websocketReq, deleteAllNotifications, getNotification, updateNotification, userSpecificNotifications } from "../CONTROLLERS/notificationContr.js"
 
 export const notification_router = express.Router()
+
+notification_router.route("/websocket")
+.patch(websocketReq)
 
 notification_router.route("/")
 .get(userSpecificNotifications)

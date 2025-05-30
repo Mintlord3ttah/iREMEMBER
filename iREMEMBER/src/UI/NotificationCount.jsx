@@ -1,11 +1,11 @@
 import React from 'react'
 import { useDataContext } from '../context/DataContext'
-import { useQueries } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getItems } from '../service/getItems'
 
 export default function NotificationCount() {
     const {currentUser} = useDataContext()
-      const {isLoading, data: notifications} = useQueries({
+      const {isLoading, data} = useQuery({
         queryKey: ["notifications"],
         queryFn: async () => getItems({
           accessToken: currentUser.accessToken,
@@ -13,8 +13,7 @@ export default function NotificationCount() {
           url: `/notifications?userId=${currentUser._id}`
         })
     })
-    console.log({notifications})
-    return null
-//   if(!notifications[0]?._id) return
-//   return <div></div>
+    const notifications = data?.data?.notifications
+  if(!notifications) return
+  return <div>{notifications.length}</div>
 }
