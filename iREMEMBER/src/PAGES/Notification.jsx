@@ -27,13 +27,14 @@ export default function NotificationUI() {
     </div> 
     return <AppContainer>
     <LeftContainer>
-        <Head heading={<p onClick={()=>navigate("/app/notifications")} className="hover:text-amber-600 cursor-pointer">Notification</p>} >
+        <Head heading={<p onClick={()=>navigate("/app/notifications")} className="hover:text-amber-600 cursor-pointer text-xl">Notification</p>} >
             <Controllers>
                 <SwitchBtn setValue={SetNotification} value={notification} />
                 <button onClick={()=>navigate("/app/notifications/set")} title='Schedule calender' className='p-2 hover:bg-amber-400 text-xl cursor-pointer'>
                     <ImCalendar />
                 </button>
-                <button onClick={()=>navigate("/app")} className="bg-amber-400 hover:bg-amber-500 cursor-pointer rounded-sm px-2.5">&larr; Back</button>
+                <button onClick={()=>navigate("/app")} className="bg-amber-400 hover:bg-amber-500 cursor-pointer rounded-sm px-2.5 max-[490px]:hidden">&larr; Back</button>
+                <button onClick={()=>navigate("/app")} className="size-8 rounded-full bg-gray-900 cursor-pointer hover:bg-gray-950 min-[490]:hidden text-gray-50 font-bold flex justify-center items-center max-[490px]:block">&larr;</button>
             </Controllers>
         </Head>
         <Outlet />

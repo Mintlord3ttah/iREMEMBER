@@ -1,6 +1,7 @@
 import {WebSocketServer} from "ws";
 import express from "express"
 import http from "http"
+import { BACKEND_URL } from "./backendSite.js";
 
 const app = express();
 export const server = http.createServer(app);
@@ -12,7 +13,7 @@ wss.on("connection", (ws) => {
   server.on("connection", () => {
       console.log("User connected");
       async function pendingNotifications() {
-          const res = await fetch("http://localhost:3000/api/v1/notifications/websocket", {
+          const res = await fetch(BACKEND_URL +"/notifications/websocket", {
             method: "PATCH",
             body: null
           })
@@ -26,7 +27,6 @@ wss.on("connection", (ws) => {
           const pendingMsgs = await pendingNotifications()
           if(pendingMsgs?.error) return
           pendingMsgs.data.forEach(message => {
-            console.log({message})
               ws.send(JSON.stringify({msg: message.message, subject: message.subject, id: message._id}));
           });
         

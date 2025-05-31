@@ -13,7 +13,8 @@ export default function NotificationCount() {
           url: `/notifications?userId=${currentUser._id}`
         })
     })
-    const notifications = data?.data?.notifications
-  if(!notifications) return
-  return <div>{notifications.length}</div>
+    
+  if(!data) return
+  const notifications = data.filter(v => v.status === "unread")
+  return <div>{notifications?.length}</div>
 }

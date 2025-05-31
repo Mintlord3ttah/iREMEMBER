@@ -15,7 +15,7 @@ export async function websocketReq(req, res, next){
             await NotificationSch.updateOne({_id: v._id},{$set:  {status: "unread"}}, {new: true, runValidators: true})
         })
 
-        console.log({data})
+        // console.log({data})
         res.status(200).json({
         status: "success",
         data

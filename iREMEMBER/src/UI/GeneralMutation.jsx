@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from "react"
 import useMutateData from "../service/useMutateData"
 import { useDataContext } from "../context/DataContext"
-import { BACKEND_URL } from "../utils/backendSite"
 
 const endpoints = {
     "pack-all": "packed",
@@ -17,8 +16,8 @@ const endpoints = {
 const GeneralMutation = memo(function GeneralMutation({w="w-fit"}) {
     const {isSelect, select, getItemStatus} = useDataContext()
     const [endpoint, setEndpoint] = useState("")
-    const {mutate, status} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `${BACKEND_URL}/items/db/${endpoints[endpoint]}`}) :
-                     useMutateData({method: endpoint.includes("wipe") ? "DELETE" : "PATCH", url: `${BACKEND_URL}/items/uniform/${endpoints[endpoint]}`})
+    const {mutate, status} = endpoint.includes("delete") ? useMutateData({method: "DELETE", url: `/items/db/${endpoints[endpoint]}`}) :
+                     useMutateData({method: endpoint.includes("wipe") ? "DELETE" : "PATCH", url: `/items/uniform/${endpoints[endpoint]}`})
 
     function handleClick(e){
         if(e.target.value === "Gen.Mutation") return
