@@ -40,7 +40,8 @@ const itemSchema = mongoose.Schema({
         select: false
     }
 })
+// db.items.dropIndex("item_1"); // Remove global uniqueness
 
-itemSchema.index({ createdById: 1, item: 1 }, { unique: [true, "Item name cannot be empty"] })
+itemSchema.index({ createdById: 1, item: 1 }, { unique: true})
 
 export const Item = mongoose.model("items", itemSchema)
